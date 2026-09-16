@@ -163,6 +163,16 @@ export default function App() {
     });
   const selectDay = (day: number) =>
     setState((prev) => ({ ...prev, selectedDay: day }));
+  const selectStage = (i: number) => {
+    setStage(i);
+    if (window.matchMedia("(max-width: 920px)").matches) {
+      requestAnimationFrame(() =>
+        document
+          .getElementById("stage-lesson")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      );
+    }
+  };
   const openStage = (i: number) => {
     setStage(i);
     go(1);
@@ -526,7 +536,7 @@ export default function App() {
                     {stages.map((st, i) => (
                       <button
                         key={st.title}
-                        onClick={() => setStage(i)}
+                        onClick={() => selectStage(i)}
                         className={i === stage ? "current" : ""}
                       >
                         <span className="stage-number">
@@ -544,7 +554,7 @@ export default function App() {
                       </button>
                     ))}
                   </section>
-                  <section className="panel lesson">
+                  <section className="panel lesson" id="stage-lesson">
                     <div className="eyebrow">
                       STAGE {String(stage + 1).padStart(2, "0")} ·{" "}
                       {stages[stage].en}
