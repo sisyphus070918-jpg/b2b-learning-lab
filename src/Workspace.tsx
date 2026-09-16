@@ -31,6 +31,8 @@ import {
   briefs,
   dailyLessons,
   makeDayTasks,
+  stageCurriculum,
+  learningResources,
 } from "./data";
 import { useLearning, today, active, streak, download } from "./store";
 import type { Answer, State } from "./store";
@@ -101,6 +103,8 @@ export default function App() {
   const [article, setArticle] = useState<number | null>(null);
   const [toast, setToast] = useState("");
   const [projectStep, setProjectStep] = useState(0);
+  const [pathMode, setPathMode] = useState<"course" | "resources">("course");
+  const [resourceCategory, setResourceCategory] = useState("全部");
   const go = (n: number) => {
     setPage(n);
     location.hash = routes[n];
@@ -497,7 +501,27 @@ export default function App() {
                 </div>
               </div>
               {page === 1 && (
-                <div className="learning-layout">
+                <>
+                  <div className="path-mode-tabs" role="tablist" aria-label="学习路径视图">
+                    <button
+                      role="tab"
+                      aria-selected={pathMode === "course"}
+                      className={pathMode === "course" ? "current" : ""}
+                      onClick={() => setPathMode("course")}
+                    >
+                      系统课程
+                    </button>
+                    <button
+                      role="tab"
+                      aria-selected={pathMode === "resources"}
+                      className={pathMode === "resources" ? "current" : ""}
+                      onClick={() => setPathMode("resources")}
+                    >
+                      外部学习渠道
+                    </button>
+                  </div>
+                  {pathMode === "course" ? (
+                    <div className="learning-layout">
                   <section className="panel stage-list">
                     {stages.map((st, i) => (
                       <button
@@ -540,6 +564,59 @@ export default function App() {
                         <p>{stages[stage].body[i]}</p>
                       </div>
                     ))}
+                    <section className="curriculum-block">
+                      <div className="curriculum-heading">
+                        <div>
+                          <span className="pill">深入课程</span>
+                          <h3>完成本阶段后，你应该能够</h3>
+                        </div>
+                        <span>{stageCurriculum[stage].chapters.length} 个学习单元</span>
+                      </div>
+                      <ul className="outcome-list">
+                        {stageCurriculum[stage].outcomes.map((outcome) => (
+                          <li key={outcome}>
+                            <CheckCircle2 size={17} />
+                            {outcome}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="chapter-list">
+                        {stageCurriculum[stage].chapters.map((chapter, index) => (
+                          <article className="chapter-card" key={chapter.title}>
+                            <div className="chapter-index">
+                              {String(index + 1).padStart(2, "0")}
+                            </div>
+                            <div>
+                              <h3>{chapter.title}</h3>
+                              <p>{chapter.content}</p>
+                              <ul>
+                                {chapter.steps.map((step) => (
+                                  <li key={step}>{step}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                      <div className="curriculum-tools">
+                        <div className="template-card">
+                          <h3>阶段作业模板</h3>
+                          <ol>
+                            {stageCurriculum[stage].template.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ol>
+                        </div>
+                        <div className="mistake-card">
+                          <h3>常见误区</h3>
+                          <ul>
+                            {stageCurriculum[stage].mistakes.map((item) => (
+                              <li key={item}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </section>
                     {stage === 0 && (
                       <>
                         <div className="lesson-section">
@@ -692,7 +769,72 @@ export default function App() {
                       </div>
                     </div>
                   </section>
-                </div>
+                    </div>
+                  ) : (
+                    <section className="resource-library">
+                      <div className="notice">
+                        这些渠道用于补充系统课程。先带着当天的作业目标学习，再把外部知识转成自己的模板或案例；不要只收藏链接。
+                      </div>
+                      <div className="filter-tabs resource-filters">
+                        {[
+                          "全部",
+                          ...Array.from(new Set(learningResources.map((item) => item.category))),
+                        ].map((item) => (
+                          <button
+                            key={item}
+                            className={resourceCategory === item ? "current" : ""}
+                            onClick={() => setResourceCategory(item)}
+                          >
+                            {item}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="resource-grid">
+                        {learningResources
+                          .filter(
+                            (item) =>
+                              resourceCategory === "全部" ||
+                              item.category === resourceCategory,
+                          )
+                          .map((item) => (
+                            <article className="panel resource-card" key={item.title}>
+                              <div className="resource-meta">
+                                <span>{item.category}</span>
+                                <small>{item.verified} 核验</small>
+                              </div>
+                              <small className="provider">{item.provider}</small>
+                              <h2>{item.title}</h2>
+                              <div className="resource-tags">
+                                <span>{item.language}</span>
+                                <span>{item.cost}</span>
+                              </div>
+                              <dl>
+                                <div>
+                                  <dt>适合学习</dt>
+                                  <dd>{item.bestFor}</dd>
+                                </div>
+                                <div>
+                                  <dt>怎么配合本平台</dt>
+                                  <dd>{item.useWith}</dd>
+                                </div>
+                              </dl>
+                              <a
+                                className="secondary"
+                                href={item.url}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                前往官方渠道 <ArrowUpRight size={16} />
+                              </a>
+                            </article>
+                          ))}
+                      </div>
+                      <p className="resource-footnote">
+                        课程是否开放、免费范围和注册要求可能调整，请以目标网站当前说明为准。市场数据只能说明总体趋势，不能证明某家企业存在采购意向。
+                      </p>
+                    </section>
+                  )}
+                </>
               )}
               {page === 2 && (
                 <>
