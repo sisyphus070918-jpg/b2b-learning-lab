@@ -36,6 +36,7 @@ import {
   knowledgeByDay,
 } from "./data";
 import { getDailyCourseDetail } from "./dailyCourseDetails";
+import { getCourseResources, stageHandbooks } from "./courseEnhancements";
 import { useLearning, today, active, streak, download } from "./store";
 import type { Answer, State } from "./store";
 import { useAgentTools } from "./useAgentTools";
@@ -133,6 +134,8 @@ export default function App() {
   const pathLesson =
     stageDays.find((lesson) => lesson.day === s.selectedDay) || stageDays[0];
   const pathDetail = getDailyCourseDetail(pathLesson.day);
+  const pathResources = getCourseResources(pathLesson.day);
+  const stageHandbook = stageHandbooks[stages[stage].title] ?? [];
   const knowledgeCategories = [
     "全部",
     ...Array.from(new Set(knowledge.map((item) => item.category))),
@@ -189,6 +192,24 @@ export default function App() {
     });
   const selectDay = (day: number) =>
     setState((prev) => ({ ...prev, selectedDay: day }));
+  const selectPathDay = (day: number) => {
+    const boundedDay = Math.max(1, Math.min(28, day));
+    const targetLesson = dailyLessons[boundedDay - 1];
+    const targetStage = stages.findIndex((item) => item.title === targetLesson.stage);
+    selectDay(boundedDay);
+    if (targetStage >= 0) setStage(targetStage);
+    requestAnimationFrame(() =>
+      document.getElementById("stage-day-course")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      }),
+    );
+  };
+  const jumpToCourseSection = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   const chooseStage = (i: number) => {
     setStage(i);
     const firstDay = dailyLessons.find(
@@ -211,6 +232,12 @@ export default function App() {
   const openStage = (i: number) => {
     chooseStage(i);
     go(1);
+  };
+  const openDailyCourseAt = (sectionId: string) => {
+    openStage(stageForDay(s.selectedDay));
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => jumpToCourseSection(sectionId)),
+    );
   };
   const openKnowledgeArticle = (title: string) => {
     const index = knowledge.findIndex((item) => item.title === title);
@@ -613,7 +640,7 @@ export default function App() {
                         <p>{stages[stage].body[i]}</p>
                       </div>
                     ))}
-                    <section className="stage-day-course" aria-labelledby="stage-day-title">
+                    <section className="stage-day-course" id="stage-day-course" aria-labelledby="stage-day-title">
                       <div className="stage-day-heading">
                         <div>
                           <span className="pill">每日课程</span>
@@ -646,7 +673,21 @@ export default function App() {
                             去完成 Day {pathLesson.day} 任务 <ArrowRight size={15} />
                           </button>
                         </div>
-                        <section className="daily-core-question">
+                        <nav className="daily-course-toc" aria-label="当日课程目录">
+                          <div><Clock3 size={15} /><span>{pathLesson.duration}</span></div>
+                          {[
+                            ["daily-overview", "核心问题"],
+                            ["daily-reading", "课程正文"],
+                            ["daily-example", "案例拆解"],
+                            ["daily-actions", "实战与自测"],
+                            ["daily-resources", "学习网页"],
+                            ["stage-handbook", "概念手册"],
+                            ["stage-curriculum", "深入课程"],
+                          ].map(([id, label]) => (
+                            <button key={id} onClick={() => jumpToCourseSection(id)}>{label}</button>
+                          ))}
+                        </nav>
+                        <section className="daily-core-question" id="daily-overview">
                           <span>今日核心问题</span>
                           <h3>{pathDetail.coreQuestion}</h3>
                           <p>{pathDetail.whyItMatters}</p>
@@ -667,7 +708,7 @@ export default function App() {
                             <p>{pathLesson.deliverable}</p>
                           </div>
                         </div>
-                        <section className="daily-reading-section">
+                        <section className="daily-reading-section" id="daily-reading">
                           <div className="daily-section-title">
                             <span className="pill">课程正文</span>
                             <h3>从概念到判断，逐步理解今天的主题</h3>
@@ -689,14 +730,14 @@ export default function App() {
                             ))}
                           </div>
                         </section>
-                        <section className="daily-example">
+                        <section className="daily-example" id="daily-example">
                           <span>示例拆解</span>
                           <div>
                             <h3>{pathDetail.example.title}</h3>
                             <p>{pathDetail.example.content}</p>
                           </div>
                         </section>
-                        <div className="daily-action-grid">
+                        <div className="daily-action-grid" id="daily-actions">
                           <section>
                             <span className="pill">实战步骤</span>
                             <h3>照着完成今天的练习</h3>
@@ -719,9 +760,72 @@ export default function App() {
                             </ul>
                           </section>
                         </div>
+                        <section className="daily-resources-section" id="daily-resources">
+                          <div className="daily-section-title">
+                            <span className="pill">对应学习网页</span>
+                            <h3>带着当天的任务学习，不只是收藏链接</h3>
+                            <p>
+                              每个页面都标明要学什么和学完后的输出。外部课程的开放状态、语言和费用可能变化，请以目标网站当前说明为准。
+                            </p>
+                          </div>
+                          <div className="daily-resource-list">
+                            {pathResources.map((resource) => (
+                              <article className="daily-resource-card" key={resource.id}>
+                                <div className="daily-resource-meta">
+                                  <span>{resource.provider}</span>
+                                  <small>{resource.language} · {resource.access}</small>
+                                </div>
+                                <h3>{resource.title}</h3>
+                                <dl>
+                                  <div>
+                                    <dt>重点学习</dt>
+                                    <dd>{resource.learn}</dd>
+                                  </div>
+                                  <div>
+                                    <dt>学习输出</dt>
+                                    <dd>{resource.task}</dd>
+                                  </div>
+                                </dl>
+                                <p className="resource-caution">{resource.note}</p>
+                                <a href={resource.url} target="_blank" rel="noreferrer">
+                                  打开官方学习页面 <ArrowUpRight size={15} />
+                                </a>
+                              </article>
+                            ))}
+                          </div>
+                        </section>
+                        <section className="stage-handbook-section" id="stage-handbook">
+                          <div className="daily-section-title">
+                            <span className="pill">本阶段概念手册</span>
+                            <h3>{stages[stage].title}必须理解的核心概念</h3>
+                            <p>每个概念都包含定义、业务用途、判断证据和常见误区。遇到陌生词时先回到这里。</p>
+                          </div>
+                          <div className="stage-handbook-grid">
+                            {stageHandbook.map((item) => (
+                              <article className="handbook-card" key={item.term}>
+                                <h3>{item.term}</h3>
+                                <p>{item.definition}</p>
+                                <dl>
+                                  <div><dt>业务用途</dt><dd>{item.businessUse}</dd></div>
+                                  <div><dt>判断证据</dt><dd>{item.evidence}</dd></div>
+                                  <div><dt>常见误区</dt><dd>{item.pitfall}</dd></div>
+                                </dl>
+                              </article>
+                            ))}
+                          </div>
+                        </section>
+                        <nav className="daily-course-pagination" aria-label="上一天或下一天">
+                          <button disabled={pathLesson.day === 1} onClick={() => selectPathDay(pathLesson.day - 1)}>
+                            上一天
+                          </button>
+                          <span>Day {pathLesson.day} / 28</span>
+                          <button disabled={pathLesson.day === 28} onClick={() => selectPathDay(pathLesson.day + 1)}>
+                            下一天 <ArrowRight size={14} />
+                          </button>
+                        </nav>
                       </article>
                     </section>
-                    <section className="curriculum-block">
+                    <section className="curriculum-block" id="stage-curriculum">
                       <div className="curriculum-heading">
                         <div>
                           <span className="pill">深入课程</span>
@@ -1069,10 +1173,27 @@ export default function App() {
                               onClick={() => {
                                 if (t.id === "review")
                                   document.getElementById("note")?.focus();
-                                else openStage(stageForDay(s.selectedDay));
+                                else
+                                  openDailyCourseAt(
+                                    t.id === "learn"
+                                      ? "daily-overview"
+                                      : t.id === "notes"
+                                        ? "daily-reading"
+                                        : "daily-actions",
+                                  );
                               }}
                             >
-                              {t.id === "review" ? "写复盘" : "查看相关课程"}{" "}
+                              {
+                                t.id === "review"
+                                  ? "写复盘"
+                                  : t.id === "learn"
+                                    ? "打开核心问题"
+                                    : t.id === "notes"
+                                      ? "开始学习正文"
+                                      : t.id === "practice"
+                                        ? "查看实战步骤"
+                                        : "查看自测标准"
+                              }{" "}
                               <ArrowUpRight size={14} />
                             </button>
                           </div>

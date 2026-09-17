@@ -1166,36 +1166,45 @@ export const dailyLessons = [
 export const makeDayTasks = (day: number) => {
   const lesson =
     dailyLessons[Math.max(0, Math.min(dailyLessons.length - 1, day - 1))];
+  const totalMinutes = lesson.duration.includes("2 小时")
+    ? 120
+    : Number(lesson.duration.match(/\d+/)?.[0] ?? 90);
+  const rounded = (ratio: number) => Math.max(5, Math.round((totalMinutes * ratio) / 5) * 5);
+  const learnTime = rounded(0.15);
+  const readingTime = rounded(0.25);
+  const practiceTime = rounded(0.3);
+  const deliverTime = rounded(0.2);
+  const reviewTime = Math.max(5, totalMinutes - learnTime - readingTime - practiceTime - deliverTime);
   return [
     {
       id: "learn",
-      title: `学习：${lesson.title}`,
-      time: "25 分钟",
-      hint: `理解今天的目标：${lesson.objective}`,
+      title: `预习核心问题：${lesson.title}`,
+      time: `${learnTime} 分钟`,
+      hint: `先读学习目标、核心问题和“为什么重要”，用自己的话写出今天要解决的问题：${lesson.objective}`,
     },
     {
       id: "notes",
-      title: "整理三个核心知识点",
-      time: "20 分钟",
-      hint: lesson.concepts.join("；"),
+      title: "学习课程正文、概念手册与对应网页",
+      time: `${readingTime} 分钟`,
+      hint: `阅读当天正文和概念手册，至少完成一个对应学习网页的指定输出。重点：${lesson.concepts.join("；")}`,
     },
     {
       id: "practice",
       title: "完成今日练习",
-      time: "30 分钟",
-      hint: lesson.practice,
+      time: `${practiceTime} 分钟`,
+      hint: `${lesson.practice} 按课程中的实战步骤执行，不跳过证据与待核实项。`,
     },
     {
       id: "deliver",
-      title: "产出今日成果",
-      time: "25 分钟",
-      hint: `交付物：${lesson.deliverable}`,
+      title: "整理并检查今日成果",
+      time: `${deliverTime} 分钟`,
+      hint: `交付物：${lesson.deliverable}。使用当天自测标准逐项检查后再标记完成。`,
     },
     {
       id: "review",
-      title: "记录收获与疑问",
-      time: "10 分钟",
-      hint: "写下一个今天学会的判断方法和一个仍需验证的问题。",
+      title: "复盘判断方法与误区",
+      time: `${reviewTime} 分钟`,
+      hint: "写下：一个今天学会的判断方法、一个自己容易犯的误区、一个仍需验证的问题，以及明天要继续使用的模板。",
     },
   ];
 };
