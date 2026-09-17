@@ -130,6 +130,10 @@ export default function App() {
   );
   const pathLesson =
     stageDays.find((lesson) => lesson.day === s.selectedDay) || stageDays[0];
+  const knowledgeCategories = [
+    "全部",
+    ...Array.from(new Set(knowledge.map((item) => item.category))),
+  ];
   const dayTasks = makeDayTasks(s.selectedDay);
   const dayKey = `day-${s.selectedDay}`;
   const done = s.taskDays[dayKey] || [];
@@ -1230,7 +1234,7 @@ export default function App() {
                 <>
                   <div className="library-toolbar">
                     <div className="filter-tabs">
-                      {["全部", ...knowledge.map((k) => k.category)].map(
+                      {knowledgeCategories.map(
                         (c) => (
                           <button
                             className={category === c ? "current" : ""}

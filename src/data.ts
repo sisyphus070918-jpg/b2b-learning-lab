@@ -1292,9 +1292,29 @@ export const knowledge = [
       "\n\n例句：We are looking for aftermarket brake pad distributors.\n我们正在寻找汽车售后刹车片经销商。",
   },
   {
+    category: "外贸术语",
+    title: "从询价到交付：10 个业务词",
+    text: "RFQ · 询价请求：买家请供应商按具体需求报价。\nSpecification · 规格：产品参数与技术要求。\nLead Time · 交期：从订单确认到可交付所需时间。\nSample · 样品：用于初步验证，不等于批量订单。\nQuotation · 报价单：应写清价格边界、有效期和条件。\nPayment Terms · 付款条件：付款时间与方式，需双方确认。\nPacking List · 装箱单：记录包装件数、重量和内容。\nCommercial Invoice · 商业发票：交易与清关常用文件，字段应核实。\nHS Code · 商品编码：影响申报与税则，必须按实际产品核实。\nWarranty · 质保：范围、期限和排除情形应写清。\n\n练习：选 5 个词，为同一个模拟询盘各写一句业务表达。",
+  },
+  {
+    category: "外贸术语",
+    title: "报价前必须问清的 8 个条件",
+    text: "1. 具体型号、规格和适用场景是什么？\n2. 预计数量和后续采购频率是多少？\n3. 是否需要样品，样品用于什么测试？\n4. 包装、标签和自有品牌有什么要求？\n5. 目的国家、城市、港口或收货仓库在哪里？\n6. 买家希望比较哪一种交付条件？\n7. 目标交期和可接受的分批方式是什么？\n8. 需要哪些文件、测试或认证证明？\n\n这些问题用于收集信息，不代表工厂一定能满足。将未确认项写入报价的“待确认”部分。",
+  },
+  {
     category: "行业知识",
     title: "刹车片：先理解采购链",
     text: "中国制造商 → 进口商 / 经销商 → 批发商 → 汽配店 / 修理厂 → 车主。\n\nOEM 面向整车配套；Aftermarket 面向维修替换。产品适配、质量一致性、供货稳定、售后和总成本都影响采购。\n\n不要仅凭“经营亚洲车型”推断其从中国采购。",
+  },
+  {
+    category: "行业知识",
+    title: "工业离心泵：需求访谈清单",
+    text: "先问使用场景，再谈型号。\n\n介质：输送什么液体？温度、腐蚀性、是否含颗粒？\n工况：需要的流量、扬程、入口条件和连续运行时间？\n现场：电源、管路接口、安装空间和环境条件？\n维护：当地是否能安装、调试和更换易损件？\n采购：项目配套、替换旧泵，还是经销商备货？\n证据：现有铭牌、参数表、现场照片或工程要求来自哪里？\n\n未获得工况信息前，不要直接推荐具体型号。技术选型应由工厂工程人员复核。",
+  },
+  {
+    category: "行业知识",
+    title: "自动封箱机：买家关心什么",
+    text: "产品适配：纸箱尺寸范围、胶带规格、封箱方式。\n产线匹配：每分钟处理量、前后段设备接口、输送高度。\n现场条件：电源、气源、空间、安全防护和操作语言。\n使用成本：胶带消耗、易损件、维护频率和停机风险。\n服务能力：安装、调试、培训、备件和远程支持的边界。\n\n把每项分成“已有资料”“需要工厂确认”“需要买家提供”。不要把通用宣传语当成已验证参数。",
   },
   {
     category: "邮件案例",
@@ -1302,9 +1322,29 @@ export const knowledge = [
     text: "Subject: Brake pad range for your aftermarket catalog\n\nHi [Name],\nI noticed your catalog includes brake components for [vehicle segment]. We manufacture [verified product range] and can share specifications for your review.\nAre you currently evaluating additional suppliers for this range?\n\nBest regards,\n[Your name]\n\n使用前替换方括号，并核实目录与供应能力。这是练习模板，不代表已获得联系许可。",
   },
   {
+    category: "邮件案例",
+    title: "信息不足时：先澄清再报价",
+    text: "Subject: Details needed for an accurate quotation\n\nHi [Name],\nThank you for your inquiry about [product]. To prepare an accurate quotation, could you confirm:\n1. the required model or key specifications;\n2. the estimated quantity; and\n3. the delivery destination?\nIf available, a specification sheet or product photo would also help our technical review.\n\nBest regards,\n[Your name]\n\n不要在信息不足时猜型号。收到资料后仍要交给工厂核实适配性。",
+  },
+  {
+    category: "邮件案例",
+    title: "第二次跟进：必须带来新信息",
+    text: "Subject: Additional specifications for [product]\n\nHi [Name],\nI’m following up with one useful detail: [new verified specification, comparison table, or application note]. Based on the products shown in your catalog, [brief relevance hypothesis].\nWould it be useful if I prepared a short specification comparison for your review?\n\nBest regards,\n[Your name]\n\n跟进应补充新证据，不要只写“Did you see my email?”。如果对方明确拒绝或要求停止联系，应结束跟进。",
+  },
+  {
     category: "客户画像",
     title: "墨西哥售后汽配经销商 ICP",
     text: "地区：墨西哥\n角色：汽配进口商 / 经销商\n产品：刹车片、刹车盘或刹车蹄\n渠道：服务汽配店或批发网络\n规模：10–200 人作为练习参考，不能仅凭规模排除\n职位：采购经理、老板或总经理\n待验证：进口能力、采购周期、自有品牌需求。",
+  },
+  {
+    category: "客户画像",
+    title: "工业泵经销商 ICP 模板",
+    text: "目标地区：[国家或城市]\n企业角色：工业设备经销商、泵类经销商或工程配套商\n产品证据：官网明确展示离心泵、流程泵或相关流体设备\n客户场景：服务工厂、公用工程、水处理或工程项目中的一种\n能力信号：技术选型、安装维护、备件或项目支持\n目标职位：采购负责人、产品经理、技术销售负责人或老板\n排除条件：只做家用小泵、纯零售、无工业客户证据\n待验证：进口能力、品牌授权限制、售后覆盖和实际采购模式。",
+  },
+  {
+    category: "客户画像",
+    title: "包装设备渠道商 ICP 模板",
+    text: "目标地区：[国家或工业城市]\n企业角色：包装机械经销商、产线集成商或工厂自动化服务商\n产品范围：封箱、开箱、贴标、输送或末端包装设备\n必选证据：官网存在相关设备页面，并面向企业客户\n加分信号：安装调试、技术团队、备件服务、案例或多个服务区域\n目标职位：采购经理、产品负责人、业务负责人或总经理\n排除条件：只销售包装耗材、只做消费级设备、没有企业服务证据\n待验证：进口方式、售后能力、区域覆盖和合作品牌限制。",
   },
   {
     category: "异议处理",
@@ -1312,9 +1352,29 @@ export const knowledge = [
     text: "先承认现状，再了解补充机会。\n\nThanks for letting me know. Do you ever evaluate backup suppliers for stock shortages or new product ranges?\n\n不要贬低原供应商，也不要立刻降价。如果明确拒绝，尊重对方选择。",
   },
   {
+    category: "异议处理",
+    title: "“你们的价格太高了”",
+    text: "先澄清比较口径。\n\nThanks for the feedback. To understand the gap, are you comparing unit price only, or the same specification, packaging, delivery term and warranty scope?\n\n下一步可以：\n1. 确认双方比较的是同一规格；\n2. 拆分包装、运输和附加服务；\n3. 讨论不同数量或配置；\n4. 说明能够证明的质量或交付差异。\n\n不要在不了解差距时立即降价，也不要编造成本或竞争对手信息。",
+  },
+  {
+    category: "异议处理",
+    title: "“先把目录和最低价发来”",
+    text: "可以提供资料，同时收窄需求。\n\nI can share our current catalog. To highlight the relevant models and quote on the same basis, could you tell me which product range, approximate quantity and destination you are considering?\n\n发送前检查：目录版本、型号范围、联系方式和能力描述是否真实；价格是否注明币种、数量基础、交付边界和有效期。不要把未经确认的“最低价”当作长期承诺。",
+  },
+  {
     category: "国家市场笔记",
     title: "墨西哥：市场研究起步清单",
     text: "这是待调研清单，不是已核实的市场结论。\n\n1. 目标车型与保有量结构是什么？\n2. 哪些企业经营制动产品批发？\n3. 买家有无进口能力或当地代理？\n4. 包装、语言、认证与清关有哪些要求？\n5. 交货到哪个港口或仓库？\n\n记录每项证据的来源与日期。法规、关税和认证应在交易前查询权威来源。",
+  },
+  {
+    category: "国家市场笔记",
+    title: "阿联酋：汽配市场研究清单",
+    text: "这是一份研究问题，不是市场结论。\n\n1. 目标企业主要服务乘用车、商用车还是车队？\n2. 产品目录覆盖哪些车型和制动部件？\n3. 企业是进口商、经销商、零售商还是维修网络？\n4. 是否有仓储、批发网络或多个服务地点的公开证据？\n5. 包装语言、标签、产品证明和清关要求需要向哪些官方机构核实？\n6. 买家更关注高温、沙尘等使用环境，还是价格与供货稳定？这一点只能通过访谈验证。\n\n保存网页地址、原文摘要和核实日期；不要仅凭企业地址推断其采购能力。",
+  },
+  {
+    category: "国家市场笔记",
+    title: "越南：包装设备市场研究清单",
+    text: "这是一份待核实清单，不代表已确认需求。\n\n1. 哪些食品、日化或电商仓储场景可能使用封箱设备？\n2. 当地渠道商是否同时提供安装、调试和维修？\n3. 目标企业代理哪些设备品类，是否存在合作品牌限制？\n4. 电源、气源、语言、安全和现场接口需要怎样适配？\n5. 进口、税则、认证及设备安全要求应查询哪些官方来源？\n6. 备件库存和响应时间由中国工厂还是当地伙伴承担？\n\n先寻找公开证据，再把无法从网页确认的问题放入访谈清单。",
   },
 ];
 export const briefs = [
