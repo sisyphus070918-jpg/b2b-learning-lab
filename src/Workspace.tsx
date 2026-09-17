@@ -765,7 +765,7 @@ export default function App() {
                             <span className="pill">对应学习网页</span>
                             <h3>带着当天的任务学习，不只是收藏链接</h3>
                             <p>
-                              每个页面都标明要学什么和学完后的输出。外部课程的开放状态、语言和费用可能变化，请以目标网站当前说明为准。
+                              每个页面都标明要学什么和学完后的输出。本目录只推荐可以免费学习正文的官方资源；无需购买证书、会员或扩展服务。若目标页面以后改为收费，请先跳过并反馈给我替换。
                             </p>
                           </div>
                           <div className="daily-resource-list">
@@ -1034,7 +1034,7 @@ export default function App() {
                   ) : (
                     <section className="resource-library">
                       <div className="notice">
-                        这些渠道用于补充系统课程。先带着当天的作业目标学习，再把外部知识转成自己的模板或案例；不要只收藏链接。
+                        这些渠道用于补充系统课程，并以可免费学习的官方资源为准。先带着当天的作业目标学习，再把外部知识转成自己的模板或案例；无需购买证书、会员或扩展服务。
                       </div>
                       <div className="filter-tabs resource-filters">
                         {[
