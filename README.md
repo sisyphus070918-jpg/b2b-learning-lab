@@ -39,7 +39,7 @@ npm run preview
 
 - 学习总览：今日任务、连续学习、完成天数、企业分析数量与技能进度。
 - 八阶段学习路径：行业认知 → ICP → 潜客判断 → 外贸基础 → 商务英语 → 销售 → 客户开发 → 项目交付。每阶段包含 3 个导读、4 个深入单元、学习成果、操作步骤、作业模板、常见误区和可保存练习。
-- 外部学习渠道：建立 32 项优质免费资源目录，收录中国大学 MOOC、ITC SME Trade Academy、WTO Stats、UN Comtrade、Trade.gov、British Council、OpenLearn、HubSpot Academy、Salesforce Trailhead 和 WTO e-Learning。Day 1–28 每天配置 3–4 项对应资源，区分核心必学与拓展选学，并说明学习重点、练习输出、访问条件和适用限制；课程正文均可免费学习，无需购买证书、会员或高级额度。
+- 外部学习渠道：建立 32 项逐日课程目录和 20 个精选学习渠道，收录中国大学 MOOC、ITC SME Trade Academy、Global Trade Helpdesk、WITS、WTO Stats、UN Comtrade、Trade.gov、UNIDO、British Council、OpenLearn、HubSpot Academy、Salesforce Trailhead 和 WTO e-Learning。Day 1–28 每天配置 3–4 项对应资源，区分核心必学与拓展选学，并说明学习重点、练习输出、访问条件和适用限制；课程正文均可免费学习，无需购买证书、会员或高级额度。
 - Day 1 完整示例：刹车片采购链、8 个产品认知问题、10 个外贸词、ICP 输入、A/B/C 判断与 5 家模拟企业作业。
 - 每日任务：Day 1–28 均有独立主题、目标、知识点、练习与交付物，可用日期选择器自由切换。每一日的 5 项任务、完成状态和复盘分别保存。
 - 案例训练：5 份虚构档案，包含匹配、待核实和不匹配样本。填写角色、分级、职位、理由及策略；客观项逐项评分，误判保留并支持重做。

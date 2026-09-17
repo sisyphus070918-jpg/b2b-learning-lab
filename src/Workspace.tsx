@@ -1037,7 +1037,7 @@ export default function App() {
                   ) : (
                     <section className="resource-library">
                       <div className="notice">
-                        这些渠道用于补充系统课程，并以可免费学习的官方资源为准。先带着当天的作业目标学习，再把外部知识转成自己的模板或案例；无需购买证书、会员或扩展服务。
+                        当前收录 {learningResources.length} 个经过筛选的优质免费渠道，覆盖系统课程、市场数据、关税合规、商务英语、销售和项目交付。先带着当天的作业目标学习，再把外部知识转成自己的模板或案例；无需购买证书、会员或扩展服务。
                       </div>
                       <div className="filter-tabs resource-filters">
                         {[
