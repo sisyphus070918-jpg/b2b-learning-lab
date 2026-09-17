@@ -33,6 +33,7 @@ import {
   makeDayTasks,
   stageCurriculum,
   learningResources,
+  knowledgeByDay,
 } from "./data";
 import { useLearning, today, active, streak, download } from "./store";
 import type { Answer, State } from "./store";
@@ -141,6 +142,13 @@ export default function App() {
         (category === "全部" || item.category === category) &&
         `${item.title}${item.text}`.toLowerCase().includes(query.toLowerCase()),
     );
+  const recommendedKnowledge = (knowledgeByDay[s.selectedDay] || [])
+    .map((title) => knowledge.find((item) => item.title === title))
+    .filter((item): item is (typeof knowledge)[number] => Boolean(item));
+  const knowledgeDaysFor = (title: string) =>
+    Object.entries(knowledgeByDay)
+      .filter(([, titles]) => titles.includes(title))
+      .map(([day]) => Number(day));
   const dayTasks = makeDayTasks(s.selectedDay);
   const dayKey = `day-${s.selectedDay}`;
   const done = s.taskDays[dayKey] || [];
@@ -201,6 +209,14 @@ export default function App() {
   const openStage = (i: number) => {
     chooseStage(i);
     go(1);
+  };
+  const openKnowledgeArticle = (title: string) => {
+    const index = knowledge.findIndex((item) => item.title === title);
+    if (index < 0) return;
+    setCategory("全部");
+    setQuery("");
+    setArticle(index);
+    go(4);
   };
   const selected = cases[caseIndex];
   const draft = s.caseDrafts[selected.id] || blankAnswer();
@@ -1011,6 +1027,27 @@ export default function App() {
                         <h3>{dayLesson.deliverable}</h3>
                         <p>{dayLesson.practice}</p>
                       </section>
+                      <section className="panel below day-knowledge-panel">
+                        <div className="day-knowledge-heading">
+                          <div>
+                            <small>与 Day {s.selectedDay} 对应</small>
+                            <h3>今日推荐知识</h3>
+                          </div>
+                          <BookOpen size={20} />
+                        </div>
+                        <div className="day-knowledge-list">
+                          {recommendedKnowledge.map((item) => (
+                            <button
+                              key={item.title}
+                              onClick={() => openKnowledgeArticle(item.title)}
+                            >
+                              <span>{item.category}</span>
+                              <strong>{item.title}</strong>
+                              <ArrowUpRight size={15} />
+                            </button>
+                          ))}
+                        </div>
+                      </section>
                       <section className="panel below">
                         <h2>Day {s.selectedDay} 学习记录</h2>
                         <p className="spaced">一个新收获，一个还想弄懂的问题。</p>
@@ -1290,6 +1327,13 @@ export default function App() {
                       <div className="eyebrow spaced">
                         {knowledge[article].category}
                       </div>
+                      <div className="knowledge-day-tags">
+                        {knowledgeDaysFor(knowledge[article].title).map((day) => (
+                          <button key={day} onClick={() => { selectDay(day); go(2); }}>
+                            Day {day}
+                          </button>
+                        ))}
+                      </div>
                       <h2>{knowledge[article].title}</h2>
                       <div className="article-text">
                         {knowledge[article].text}
@@ -1307,6 +1351,9 @@ export default function App() {
                               <BookOpen size={22} />
                             </span>
                             <small>{k.category}</small>
+                            <span className="knowledge-days">
+                              推荐 Day {knowledgeDaysFor(k.title).join(" · ")}
+                            </span>
                             <h3>{k.title}</h3>
                             <p>{k.text.slice(0, 68)}…</p>
                             <span className="text-button">

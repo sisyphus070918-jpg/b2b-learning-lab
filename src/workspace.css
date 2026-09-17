@@ -665,6 +665,59 @@ blockquote span {
   font-size: 18px;
   margin-bottom: 7px;
 }
+.day-knowledge-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 13px;
+}
+.day-knowledge-heading small {
+  display: block;
+  color: #849286;
+  margin-bottom: 3px;
+}
+.day-knowledge-heading svg {
+  color: var(--green);
+}
+.day-knowledge-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.day-knowledge-list button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 3px 10px;
+  padding: 11px 12px;
+  text-align: left;
+  color: #425847;
+  background: #f7faf6;
+  border: 1px solid #e0e8df;
+  border-radius: 7px;
+}
+.day-knowledge-list button:hover {
+  border-color: #8bb08e;
+  background: #eef6ee;
+}
+.day-knowledge-list button span {
+  grid-column: 1;
+  color: #819184;
+  font-size: 11px;
+}
+.day-knowledge-list button strong {
+  grid-column: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.day-knowledge-list button svg {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  color: var(--green);
+}
 .daily-task:last-child {
   border-bottom: 0;
 }
@@ -966,6 +1019,12 @@ blockquote span {
   color: #809479;
   margin-bottom: 6px;
 }
+.knowledge-days {
+  display: block;
+  margin-bottom: 8px;
+  color: #8a958c;
+  font-size: 11px;
+}
 .knowledge-card h3 {
   margin-bottom: 10px;
 }
@@ -982,6 +1041,24 @@ blockquote span {
   white-space: pre-wrap;
   margin-top: 25px;
   overflow-wrap: anywhere;
+}
+.knowledge-day-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 15px;
+}
+.knowledge-day-tags button {
+  padding: 5px 9px;
+  color: #57705e;
+  background: #edf5ed;
+  border: 1px solid #d8e7d8;
+  border-radius: 999px;
+  font-size: 12px;
+}
+.knowledge-day-tags button:hover {
+  border-color: #82aa87;
+  color: var(--green);
 }
 .skill-row {
   margin: 20px 0;
