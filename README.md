@@ -4,7 +4,12 @@
 
 ## 稳定公网发布
 
-稳定分享地址：<https://b2b-learning-lab-0916.pages.dev/>。
+稳定分享地址：
+
+- Cloudflare Pages：<https://b2b-learning-lab-0916.pages.dev/>
+- GitHub Pages 镜像：<https://sisyphus070918-jpg.github.io/b2b-learning-lab/>
+
+两个地址展示同一套学习内容。部分网络无法访问 `pages.dev` 时，可以改用 GitHub Pages 镜像。
 
 双击 `deploy-public.cmd` 可重新发布最新内容。首次使用需要完成一次 Cloudflare 登录，此后脚本会自动构建并更新同一个公网地址。正式发布使用 `dist/` 静态文件，不依赖本机保持开机，也不经过 `chatgpt.site`。
 
