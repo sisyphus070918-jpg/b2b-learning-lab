@@ -125,6 +125,11 @@ export default function App() {
     document.title = `${pageNames[page]} · 出海研习社`;
   }, [page]);
   const dayLesson = dailyLessons[s.selectedDay - 1];
+  const stageDays = dailyLessons.filter(
+    (lesson) => lesson.stage === stages[stage].title,
+  );
+  const pathLesson =
+    stageDays.find((lesson) => lesson.day === s.selectedDay) || stageDays[0];
   const dayTasks = makeDayTasks(s.selectedDay);
   const dayKey = `day-${s.selectedDay}`;
   const done = s.taskDays[dayKey] || [];
@@ -163,8 +168,17 @@ export default function App() {
     });
   const selectDay = (day: number) =>
     setState((prev) => ({ ...prev, selectedDay: day }));
-  const selectStage = (i: number) => {
+  const chooseStage = (i: number) => {
     setStage(i);
+    const firstDay = dailyLessons.find(
+      (lesson) => lesson.stage === stages[i].title,
+    );
+    if (firstDay && dailyLessons[s.selectedDay - 1]?.stage !== stages[i].title) {
+      selectDay(firstDay.day);
+    }
+  };
+  const selectStage = (i: number) => {
+    chooseStage(i);
     if (window.matchMedia("(max-width: 920px)").matches) {
       requestAnimationFrame(() =>
         document
@@ -174,7 +188,7 @@ export default function App() {
     }
   };
   const openStage = (i: number) => {
-    setStage(i);
+    chooseStage(i);
     go(1);
   };
   const selected = cases[caseIndex];
@@ -559,11 +573,7 @@ export default function App() {
                       STAGE {String(stage + 1).padStart(2, "0")} ·{" "}
                       {stages[stage].en}
                     </div>
-                    <h2>
-                      {stage === 0
-                        ? "Day 1：汽车刹车片海外获客基础"
-                        : stages[stage].title}
-                    </h2>
+                    <h2>{stages[stage].title}</h2>
                     <p className="lesson-goal">{stages[stage].goal}</p>
                     {stages[stage].lessons.map((title, i) => (
                       <div className="lesson-section" key={title}>
@@ -574,6 +584,57 @@ export default function App() {
                         <p>{stages[stage].body[i]}</p>
                       </div>
                     ))}
+                    <section className="stage-day-course" aria-labelledby="stage-day-title">
+                      <div className="stage-day-heading">
+                        <div>
+                          <span className="pill">每日课程</span>
+                          <h3 id="stage-day-title">选择这一阶段的学习日</h3>
+                        </div>
+                        <span>Day {String(pathLesson.day).padStart(2, "0")}</span>
+                      </div>
+                      <div className="stage-day-tabs" role="tablist" aria-label="本阶段每日课程">
+                        {stageDays.map((lesson) => (
+                          <button
+                            key={lesson.day}
+                            role="tab"
+                            aria-selected={pathLesson.day === lesson.day}
+                            className={pathLesson.day === lesson.day ? "current" : ""}
+                            onClick={() => selectDay(lesson.day)}
+                          >
+                            <strong>Day {lesson.day}</strong>
+                            <span>{lesson.title}</span>
+                          </button>
+                        ))}
+                      </div>
+                      <article className="stage-day-detail">
+                        <div className="stage-day-summary">
+                          <div>
+                            <small>{pathLesson.duration}</small>
+                            <h3>{pathLesson.title}</h3>
+                            <p>{pathLesson.objective}</p>
+                          </div>
+                          <button className="outline-button" onClick={() => go(2)}>
+                            去完成 Day {pathLesson.day} 任务 <ArrowRight size={15} />
+                          </button>
+                        </div>
+                        <div className="stage-day-grid">
+                          <div>
+                            <strong>今天要掌握</strong>
+                            <ul>
+                              {pathLesson.concepts.map((concept) => (
+                                <li key={concept}>{concept}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <strong>动手练习</strong>
+                            <p>{pathLesson.practice}</p>
+                            <strong>今日交付物</strong>
+                            <p>{pathLesson.deliverable}</p>
+                          </div>
+                        </div>
+                      </article>
+                    </section>
                     <section className="curriculum-block">
                       <div className="curriculum-heading">
                         <div>

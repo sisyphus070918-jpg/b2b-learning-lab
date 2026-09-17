@@ -236,6 +236,93 @@ progress::-moz-progress-bar {
   line-height: 1.95;
   color: #586b5e;
 }
+.stage-day-course {
+  margin: 30px 0 6px;
+  padding-top: 28px;
+  border-top: 2px solid #dfe9e1;
+}
+.stage-day-heading,
+.stage-day-summary {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+.stage-day-heading .pill {
+  margin-bottom: 9px;
+}
+.stage-day-heading > span,
+.stage-day-summary small {
+  color: #7d8e80;
+  font-size: 12px;
+}
+.stage-day-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 9px;
+  margin: 18px 0 12px;
+}
+.stage-day-tabs button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px 13px;
+  text-align: left;
+  border: 1px solid #dfe7df;
+  border-radius: 8px;
+  background: #fff;
+  color: #526358;
+}
+.stage-day-tabs button:hover,
+.stage-day-tabs button.current {
+  border-color: #7eae85;
+  background: #eef6ef;
+  color: var(--green);
+}
+.stage-day-tabs button span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.stage-day-detail {
+  padding: 20px;
+  border: 1px solid #dbe6dc;
+  border-radius: 10px;
+  background: #f8fbf7;
+}
+.stage-day-summary {
+  align-items: center;
+}
+.stage-day-summary h3 {
+  margin: 4px 0 6px;
+  font-size: 19px;
+}
+.stage-day-summary p,
+.stage-day-grid p,
+.stage-day-grid li {
+  color: #566b5b;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.stage-day-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid #dfe8df;
+}
+.stage-day-grid ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+.stage-day-grid p {
+  margin: 7px 0 14px;
+}
 .curriculum-block {
   margin: 30px 0 6px;
   padding-top: 28px;
@@ -1179,6 +1266,22 @@ footer span {
     padding-inline: 9px;
   }
   .chapter-card {
+    grid-template-columns: 1fr;
+  }
+  .stage-day-heading,
+  .stage-day-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .stage-day-tabs {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .stage-day-tabs button {
+    flex: 0 0 148px;
+  }
+  .stage-day-grid {
     grid-template-columns: 1fr;
   }
   .curriculum-heading {
