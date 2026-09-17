@@ -869,6 +869,19 @@ blockquote span {
 .library-toolbar {
   margin-bottom: 25px;
 }
+.library-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+  color: #718173;
+  font-size: 13px;
+}
+.library-meta strong {
+  color: #3f5845;
+  font-size: 16px;
+}
 .filter-tabs {
   display: flex;
   gap: 6px;
@@ -876,6 +889,9 @@ blockquote span {
   margin-bottom: 18px;
 }
 .filter-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   border: 1px solid #e0e7dd;
   background: #fff;
   color: #7e8d7e;
@@ -883,10 +899,25 @@ blockquote span {
   padding: 8px 14px;
   font-size: 14px;
 }
+.filter-tabs button > span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #eef2ec;
+  color: #718073;
+  font-size: 11px;
+}
 .filter-tabs button.current {
   background: var(--green);
   color: #fff;
   border-color: var(--green);
+}
+.filter-tabs button.current > span {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
 }
 .search {
   display: flex;
@@ -1254,6 +1285,11 @@ footer span {
   }
 }
 @media (max-width: 700px) {
+  .library-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
   .resource-grid,
   .curriculum-tools {
     grid-template-columns: 1fr;

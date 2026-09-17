@@ -134,6 +134,13 @@ export default function App() {
     "全部",
     ...Array.from(new Set(knowledge.map((item) => item.category))),
   ];
+  const visibleKnowledge = knowledge
+    .map((item, index) => ({ item, index }))
+    .filter(
+      ({ item }) =>
+        (category === "全部" || item.category === category) &&
+        `${item.title}${item.text}`.toLowerCase().includes(query.toLowerCase()),
+    );
   const dayTasks = makeDayTasks(s.selectedDay);
   const dayKey = `day-${s.selectedDay}`;
   const done = s.taskDays[dayKey] || [];
@@ -1233,6 +1240,10 @@ export default function App() {
               {page === 4 && (
                 <>
                   <div className="library-toolbar">
+                    <div className="library-meta">
+                      <strong>{knowledge.length} 篇实用知识</strong>
+                      <span>{knowledgeCategories.length - 1} 个主题 · 当前显示 {visibleKnowledge.length} 篇</span>
+                    </div>
                     <div className="filter-tabs">
                       {knowledgeCategories.map(
                         (c) => (
@@ -1245,6 +1256,12 @@ export default function App() {
                             }}
                           >
                             {c}
+                            <span aria-hidden="true">
+                              {c === "全部"
+                                ? knowledge.length
+                                : knowledge.filter((item) => item.category === c)
+                                    .length}
+                            </span>
                           </button>
                         ),
                       )}
@@ -1280,16 +1297,7 @@ export default function App() {
                     </section>
                   ) : (
                     <div className="knowledge-grid">
-                      {knowledge
-                        .map((k, i) => ({ k, i }))
-                        .filter(
-                          ({ k }) =>
-                            (category === "全部" || k.category === category) &&
-                            `${k.title}${k.text}`
-                              .toLowerCase()
-                              .includes(query.toLowerCase()),
-                        )
-                        .map(({ k, i }) => (
+                      {visibleKnowledge.map(({ item: k, index: i }) => (
                           <button
                             className="panel knowledge-card"
                             key={k.title}
@@ -1308,13 +1316,7 @@ export default function App() {
                         ))}
                     </div>
                   )}
-                  {!knowledge.some(
-                    (k) =>
-                      (category === "全部" || k.category === category) &&
-                      `${k.title}${k.text}`
-                        .toLowerCase()
-                        .includes(query.toLowerCase()),
-                  ) && (
+                  {visibleKnowledge.length === 0 && (
                     <div className="panel empty">
                       <Search />
                       <p>没有匹配内容，试试“刹车片”或“采购”。</p>
