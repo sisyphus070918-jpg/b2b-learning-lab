@@ -765,12 +765,15 @@ export default function App() {
                             <span className="pill">对应学习网页</span>
                             <h3>带着当天的任务学习，不只是收藏链接</h3>
                             <p>
-                              每个页面都标明要学什么和学完后的输出。本目录只推荐可以免费学习正文的官方资源；无需购买证书、会员或扩展服务。若目标页面以后改为收费，请先跳过并反馈给我替换。
+                              今天配置 {pathResources.length} 项优质免费资源。第一项是核心必学，其余是按时间选择的拓展课程；每项都写明学习重点和可提交的输出，无需购买证书、会员或扩展服务。若目标页面以后改为收费，请先跳过并反馈给我替换。
                             </p>
                           </div>
                           <div className="daily-resource-list">
-                            {pathResources.map((resource) => (
+                            {pathResources.map((resource, resourceIndex) => (
                               <article className="daily-resource-card" key={resource.id}>
+                                <span className={resourceIndex === 0 ? "resource-priority required" : "resource-priority optional"}>
+                                  {resourceIndex === 0 ? "核心必学" : "拓展选学"}
+                                </span>
                                 <div className="daily-resource-meta">
                                   <span>{resource.provider}</span>
                                   <small>{resource.language} · {resource.access}</small>

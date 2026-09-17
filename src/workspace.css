@@ -564,6 +564,25 @@ progress::-moz-progress-bar {
   border-radius: 10px;
   background: #fff;
 }
+.resource-priority {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+}
+.resource-priority.required {
+  background: #e4f3e8;
+  color: #176a45;
+}
+.resource-priority.optional {
+  background: #f2f4ef;
+  color: #647166;
+}
 .daily-resource-meta {
   display: flex;
   flex-direction: column;
