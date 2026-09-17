@@ -35,6 +35,7 @@ import {
   learningResources,
   knowledgeByDay,
 } from "./data";
+import { getDailyCourseDetail } from "./dailyCourseDetails";
 import { useLearning, today, active, streak, download } from "./store";
 import type { Answer, State } from "./store";
 import { useAgentTools } from "./useAgentTools";
@@ -131,6 +132,7 @@ export default function App() {
   );
   const pathLesson =
     stageDays.find((lesson) => lesson.day === s.selectedDay) || stageDays[0];
+  const pathDetail = getDailyCourseDetail(pathLesson.day);
   const knowledgeCategories = [
     "全部",
     ...Array.from(new Set(knowledge.map((item) => item.category))),
@@ -644,6 +646,11 @@ export default function App() {
                             去完成 Day {pathLesson.day} 任务 <ArrowRight size={15} />
                           </button>
                         </div>
+                        <section className="daily-core-question">
+                          <span>今日核心问题</span>
+                          <h3>{pathDetail.coreQuestion}</h3>
+                          <p>{pathDetail.whyItMatters}</p>
+                        </section>
                         <div className="stage-day-grid">
                           <div>
                             <strong>今天要掌握</strong>
@@ -659,6 +666,58 @@ export default function App() {
                             <strong>今日交付物</strong>
                             <p>{pathLesson.deliverable}</p>
                           </div>
+                        </div>
+                        <section className="daily-reading-section">
+                          <div className="daily-section-title">
+                            <span className="pill">课程正文</span>
+                            <h3>从概念到判断，逐步理解今天的主题</h3>
+                          </div>
+                          <div className="daily-reading-list">
+                            {pathDetail.readings.map((reading, index) => (
+                              <article className="daily-reading-card" key={reading.title}>
+                                <span>{String(index + 1).padStart(2, "0")}</span>
+                                <div>
+                                  <h3>{reading.title}</h3>
+                                  <p>{reading.content}</p>
+                                  <ul>
+                                    {reading.takeaways.map((takeaway) => (
+                                      <li key={takeaway}>{takeaway}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </article>
+                            ))}
+                          </div>
+                        </section>
+                        <section className="daily-example">
+                          <span>示例拆解</span>
+                          <div>
+                            <h3>{pathDetail.example.title}</h3>
+                            <p>{pathDetail.example.content}</p>
+                          </div>
+                        </section>
+                        <div className="daily-action-grid">
+                          <section>
+                            <span className="pill">实战步骤</span>
+                            <h3>照着完成今天的练习</h3>
+                            <ol>
+                              {pathDetail.workflow.map((step) => (
+                                <li key={step}>{step}</li>
+                              ))}
+                            </ol>
+                          </section>
+                          <section>
+                            <span className="pill">自测标准</span>
+                            <h3>达到这些标准再进入下一天</h3>
+                            <ul>
+                              {pathDetail.selfCheck.map((item) => (
+                                <li key={item}>
+                                  <CheckCircle2 size={16} />
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </section>
                         </div>
                       </article>
                     </section>

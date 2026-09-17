@@ -323,6 +323,179 @@ progress::-moz-progress-bar {
 .stage-day-grid p {
   margin: 7px 0 14px;
 }
+.daily-core-question {
+  margin-top: 20px;
+  padding: 20px 22px;
+  border-radius: 10px;
+  background: #163f34;
+  color: #fff;
+}
+.daily-core-question > span,
+.daily-example > span {
+  display: block;
+  margin-bottom: 7px;
+  color: #bddd9d;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+.daily-core-question h3 {
+  margin-bottom: 7px;
+  font-size: 18px;
+  line-height: 1.55;
+}
+.daily-core-question p {
+  color: #d5e5de;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.daily-reading-section {
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid #dfe8df;
+}
+.daily-section-title {
+  margin-bottom: 14px;
+}
+.daily-section-title .pill,
+.daily-action-grid .pill {
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.daily-section-title h3,
+.daily-action-grid h3 {
+  font-size: 17px;
+}
+.daily-reading-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.daily-reading-card {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 15px;
+  padding: 20px;
+  border: 1px solid #dfe7df;
+  border-radius: 9px;
+  background: #fff;
+}
+.daily-reading-card > span {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #e7f1e5;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+}
+.daily-reading-card h3 {
+  margin-bottom: 8px;
+  color: #30473a;
+  font-size: 17px;
+}
+.daily-reading-card p {
+  color: #52675a;
+  font-size: 15px;
+  line-height: 1.95;
+}
+.daily-reading-card ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 15px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.daily-reading-card li {
+  padding: 10px 11px;
+  border-radius: 7px;
+  background: #f1f6ef;
+  color: #5a705f;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.daily-example {
+  display: grid;
+  grid-template-columns: 95px minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 14px;
+  padding: 20px 22px;
+  border: 1px solid #e6ddc9;
+  border-radius: 9px;
+  background: #fffaf0;
+}
+.daily-example > span {
+  margin: 2px 0 0;
+  color: #8b6a32;
+}
+.daily-example h3 {
+  margin-bottom: 7px;
+  color: #5c4b2f;
+  font-size: 16px;
+}
+.daily-example p {
+  color: #6e634d;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.daily-action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+.daily-action-grid > section {
+  padding: 20px;
+  border: 1px solid #dfe7df;
+  border-radius: 9px;
+  background: #fff;
+}
+.daily-action-grid ol,
+.daily-action-grid ul {
+  margin: 13px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: action-step;
+}
+.daily-action-grid ol li {
+  counter-increment: action-step;
+}
+.daily-action-grid li {
+  position: relative;
+  margin-top: 9px;
+  padding-left: 30px;
+  color: #566a5b;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.daily-action-grid ol li::before {
+  content: counter(action-step);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 21px;
+  height: 21px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e8f2e6;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+}
+.daily-action-grid ul li {
+  display: flex;
+  gap: 9px;
+  padding-left: 0;
+}
+.daily-action-grid ul svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--green);
+}
 .curriculum-block {
   margin: 30px 0 6px;
   padding-top: 28px;
@@ -1396,6 +1569,14 @@ footer span {
   }
   .stage-day-grid {
     grid-template-columns: 1fr;
+  }
+  .daily-reading-card ul,
+  .daily-action-grid {
+    grid-template-columns: 1fr;
+  }
+  .daily-example {
+    grid-template-columns: 1fr;
+    gap: 5px;
   }
   .curriculum-heading {
     align-items: flex-start;
