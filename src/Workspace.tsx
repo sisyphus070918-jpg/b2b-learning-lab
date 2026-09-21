@@ -46,16 +46,16 @@ import { getCourseResources, stageHandbooks } from "./courseEnhancements";
 import { useLearning, today, active, streak, download } from "./store";
 import type { Answer, State } from "./store";
 import { useAgentTools } from "./useAgentTools";
-import { aiLessons, b2bEssentials, diagnosticQuestions, projectLadder, skillDomains, unifiedRoadmap } from "./learningBlueprint";
+import { aiLessons, aiResources, b2bEssentials, diagnosticQuestions, projectLadder, skillDomains, unifiedRoadmap } from "./learningBlueprint";
 const pageNames = [
   "学习总览",
-  "学习路径",
+  "综合学习路径",
   "每日任务",
   "案例训练",
   "知识库",
-  "学习进度",
+  "成长档案",
   "项目中心",
-  "综合学习路线",
+  "AI 深入教材",
   "能力前测",
   "AI 学习导师",
   "我的作品集",
@@ -136,7 +136,7 @@ export default function App() {
   const [article, setArticle] = useState<number | null>(null);
   const [toast, setToast] = useState("");
   const [projectStep, setProjectStep] = useState(0);
-  const [pathMode, setPathMode] = useState<"course" | "resources">("course");
+  const [pathMode, setPathMode] = useState<"unified" | "course" | "resources">("unified");
   const [resourceCategory, setResourceCategory] = useState("全部");
   const [aiLessonIndex, setAiLessonIndex] = useState(0);
   const [assessmentStep, setAssessmentStep] = useState(0);
@@ -145,6 +145,10 @@ export default function App() {
     setPage(n);
     location.hash = routes[n];
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const openUnifiedPath = () => {
+    setPathMode("unified");
+    go(1);
   };
   useAgentTools(s, go);
   useEffect(() => {
@@ -205,6 +209,7 @@ export default function App() {
   );
   const portfolioCount = Object.keys(s.portfolio).length;
   const aiLesson = aiLessons[aiLessonIndex];
+  const currentAiResources = aiResources.filter((item) => item.lessonId === aiLesson.id);
   const skillLevel = (domain: string) => {
     const evidence = s.skillEvidence[domain] || 0;
     const diagnosticBoost = s.diagnostic.completedAt ? Math.min(1, Math.floor(diagnosticScore / 5)) : 0;
@@ -274,6 +279,16 @@ export default function App() {
         block: "start",
       }),
     );
+  };
+  const openB2bCourse = (day: number) => {
+    setPathMode("course");
+    selectPathDay(day);
+    go(1);
+  };
+  const openAiTextbook = (lessonId: string) => {
+    const lessonIndex = aiLessons.findIndex((lesson) => lesson.id === lessonId);
+    if (lessonIndex >= 0) setAiLessonIndex(lessonIndex);
+    go(7);
   };
   const jumpToCourseSection = (id: string) =>
     document.getElementById(id)?.scrollIntoView({
@@ -453,9 +468,8 @@ export default function App() {
         </div>
         <nav aria-label="主导航">
           {[
-            ["学习与训练", [0, 1, 2, 3, 4, 6]],
-            ["AI 能力", [7, 8, 9]],
-            ["成长档案", [5, 10]],
+            ["学习工作台", [0, 1, 2, 3, 4, 6]],
+            ["我的成长", [5]],
           ].map(([label, ids]) => (
             <div className="nav-group" key={String(label)}>
               <div className="nav-label">{String(label)}</div>
@@ -568,70 +582,14 @@ export default function App() {
                   </button>
                 </section>
               </div>
-              <section className="panel path-panel">
-                <div className="section-heading">
-                  <div>
-                    <h2>你的能力成长路线</h2>
-                    <p>8 个阶段，把知识串成一套工作方法。</p>
-                  </div>
-                  <button className="text-button" onClick={() => go(1)}>
-                    完整学习路径 <ArrowUpRight size={17} />
-                  </button>
-                </div>
-                <div className="path-strip">
-                  {stages.map((st, i) => (
-                    <button key={st.title} onClick={() => openStage(i)}>
-                      <span
-                        className={
-                          s.lessons.includes(i) || i === 0 ? "selected" : ""
-                        }
-                      >
-                        {s.lessons.includes(i) ? (
-                          <Check size={14} />
-                        ) : (
-                          String(i + 1).padStart(2, "0")
-                        )}
-                      </span>
-                      <strong>{st.title}</strong>
-                      <small>{st.days}</small>
-                    </button>
-                  ))}
+              <section className="panel overview-next">
+                <div className="section-heading"><div><h2>现在只做一件事</h2><p>先完成今天的任务；卡住时再回到路线、知识库或案例，不必同时打开所有模块。</p></div></div>
+                <div className="overview-actions">
+                  {!s.diagnostic.completedAt && <button onClick={() => go(8)}><BrainCircuit size={18}/><span><strong>先做能力前测</strong><small>12 题，帮助判断从哪里开始</small></span><ArrowRight size={16}/></button>}
+                  <button onClick={() => go(2)}><ListChecks size={18}/><span><strong>继续 Day {s.selectedDay}</strong><small>{dayLesson.title} · {done.length}/5 项任务已完成</small></span><ArrowRight size={16}/></button>
+                  <button onClick={openUnifiedPath}><Route size={18}/><span><strong>查看综合学习路径</strong><small>确认 AI 学习如何对应 B2B 实战</small></span><ArrowRight size={16}/></button>
                 </div>
               </section>
-              <div className="bottom-cards">
-                <section className="panel">
-                  <BrainCircuit className="green" />
-                  <h3>先完成能力前测，再从适合你的起点开始</h3>
-                  <p>12 个短题覆盖 AI、代码、B2B、检索和自动化，结果只保存在当前浏览器。</p>
-                  <button className="text-button" onClick={() => go(8)}>
-                    进入能力前测 <ArrowRight size={16} />
-                  </button>
-                </section>
-                <section className="panel">
-                  <ScanSearch className="green" />
-                  <h3>把“看起来像客户”变成有依据的判断</h3>
-                  <p>5 家模拟汽配企业，练习客户角色与 A / B / C 分级。</p>
-                  <button className="text-button" onClick={() => go(3)}>
-                    进入案例训练 <ArrowRight size={16} />
-                  </button>
-                </section>
-                <section className="panel">
-                  <FolderKanban className="green" />
-                  <h3>90 天双主线：AI 能力与 B2B 实战在项目中交汇</h3>
-                  <p>先学 AI、数据、API 和 Agent，再把工具用于证据型客户研究。</p>
-                  <button className="text-button" onClick={() => go(7)}>
-                    查看综合学习路线 <ArrowRight size={16} />
-                  </button>
-                </section>
-                <section className="panel">
-                  <BriefcaseBusiness className="green" />
-                  <h3>你的第一份出海项目，先在这里演练</h3>
-                  <p>接到一份制造企业需求，从产品分析走到完整交付。</p>
-                  <button className="text-button" onClick={() => go(6)}>
-                    领取模拟项目 <ArrowRight size={16} />
-                  </button>
-                </section>
-              </div>
             </>
           ) : (
             <>
@@ -659,13 +617,13 @@ export default function App() {
                     {
                       [
                         "",
-                        "按顺序学习，也可以随时回到需要巩固的阶段。",
+                        "按 AI × B2B 的能力顺序推进；以阶段作品为准，不受原来 28 天节奏限制。",
                         "完成、记录、复盘。让今天的学习有一个具体成果。",
                         "先读证据，再做判断。这里的企业均为虚构教学案例。",
                         "把常用知识放在手边，让每一次实践都有参考。",
                         "用完成的练习衡量成长，让误判成为下一次的提醒。",
                         "接下一份模拟需求，练习交付一套完整的海外获客方案。",
-                        "把 AI 概念、工具和 B2B 实战任务放进同一条可执行路线。",
+                        "这里是 AI 深入教材：概念、跟做、小项目和免费学习资源都保留在这里。",
                         "先识别自己的起点，再获得一条可调整的学习建议。",
                         "围绕你今天的学习日、技能与项目状态，获得下一步拆解。",
                         "把完成的项目整理成能用于求职、实习或合作展示的作品说明。",
@@ -679,11 +637,19 @@ export default function App() {
                   <div className="path-mode-tabs" role="tablist" aria-label="学习路径视图">
                     <button
                       role="tab"
+                      aria-selected={pathMode === "unified"}
+                      className={pathMode === "unified" ? "current" : ""}
+                      onClick={() => setPathMode("unified")}
+                    >
+                      AI × B2B 主路线
+                    </button>
+                    <button
+                      role="tab"
                       aria-selected={pathMode === "course"}
                       className={pathMode === "course" ? "current" : ""}
                       onClick={() => setPathMode("course")}
                     >
-                      系统课程
+                      B2B 详细教材
                     </button>
                     <button
                       role="tab"
@@ -691,10 +657,46 @@ export default function App() {
                       className={pathMode === "resources" ? "current" : ""}
                       onClick={() => setPathMode("resources")}
                     >
-                      外部学习渠道
+                      免费学习资源
                     </button>
                   </div>
-                  {pathMode === "course" ? (
+                  {pathMode === "unified" ? (
+                    <>
+                      <section className="panel ai-overview">
+                        <div>
+                          <div className="eyebrow">ONE INTEGRATED ROADMAP · LEARN BY OUTPUT</div>
+                          <h2>按能力顺序走，不按原来的 28 天硬推进</h2>
+                          <p>前三阶段先建立 AI 理解和 B2B 基础；从 Python 开始，AI 技术线与 B2B 商业线并行。每一阶段都要交付一个能复核的小成果，做不出来就留在当前阶段补基础。</p>
+                        </div>
+                        <div className="ai-flow"><span>AI 基础 → LLM → Prompt</span><ArrowRight/><span>Python / API / Agent</span><ArrowRight/><span>自动化 × 获客</span><ArrowRight/><span>真实项目验证</span></div>
+                      </section>
+                      <section className="unified-roadmap" aria-label="AI 与 B2B 综合学习路线">
+                        {unifiedRoadmap.map((item) => (
+                          <article key={item.phase} className="unified-step">
+                            <div className="unified-number">{item.phase}</div>
+                            <div className="unified-main">
+                              <small>{item.days}</small>
+                              <h3><span>AI：{item.ai}</span><ArrowRight size={16}/><span>B2B：{item.b2b}</span></h3>
+                              <p>{item.outcome}</p>
+                              <strong>阶段作品：{item.project}</strong>
+                            </div>
+                            <div className="unified-actions">
+                              <button onClick={() => openAiTextbook(item.lesson)}>学习 AI 教材</button>
+                              <button onClick={() => openB2bCourse(item.b2bDays)}>打开 B2B 教材</button>
+                              <button onClick={() => { selectPathDay(item.b2bDays); go(2); }}>做对应练习</button>
+                            </div>
+                          </article>
+                        ))}
+                      </section>
+                      <section className="panel b2b-compass">
+                        <div className="section-heading"><div><div className="eyebrow">B2B STARTER COMPASS</div><h2>B2B 零基础先掌握的 7 个判断</h2><p>这不是另一条独立路线，而是每个 AI 阶段要落到的商业动作。先读“你现在就做”，再打开详细教材完成练习。</p></div><button className="text-button" onClick={() => openB2bCourse(1)}>从 B2B 基础开始 <ArrowRight size={16}/></button></div>
+                        <div className="b2b-essential-grid">{b2bEssentials.map((item, index) => <article key={item.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.simple}</p><div><strong>你现在就做：</strong>{item.do}</div><small><b>不要这样做：</b>{item.avoid}</small></article>)}</div>
+                      </section>
+                      <section className="panel path-bridge"><div><div className="eyebrow">HOW TO USE THIS PATH</div><h2>卡住时，只打开与你当前阶段有关的那一层</h2><p>“AI 教材”提供概念、免费网页和视频；“B2B 教材”提供行业知识与日课；“对应练习”把内容变成你的记录和作品。你可以反复来回，不需要从 Day 1 重新开始。</p></div><button className="secondary" onClick={() => setPathMode("resources")}>查看免费资源 <ArrowRight size={16}/></button></section>
+                    </>
+                  ) : pathMode === "course" ? (
+                    <>
+                      <section className="panel path-bridge"><div><div className="eyebrow">B2B COURSE LIBRARY</div><h2>这里是 B2B 的详细教材库，不是固定的 28 天倒计时</h2><p>选择与你当前综合阶段对应的一天即可。这里的课程用来补产品、市场、客户与获客的基础；完成作品后再回到主路线继续。</p></div><button className="secondary" onClick={() => setPathMode("unified")}>回到主路线 <ArrowRight size={16}/></button></section>
                     <div className="learning-layout">
                   <section className="panel stage-list">
                     {stages.map((st, i) => (
@@ -1128,6 +1130,7 @@ export default function App() {
                     </div>
                   </section>
                     </div>
+                  </>
                   ) : (
                     <section className="resource-library">
                       <div className="notice">
@@ -1196,34 +1199,16 @@ export default function App() {
               )}
               {page === 2 && (
                 <>
-                  <section className="panel day-picker-panel">
-                    <div className="section-heading">
-                      <div>
-                        <h2>选择学习日</h2>
-                        <p>Day 1–28 已准备完成，可按顺序学习，也可自由切换。</p>
-                      </div>
-                      <span>{completedDays} / 28 日已完成</span>
-                    </div>
+                  <details className="panel day-switcher">
+                    <summary><span><strong>Day {s.selectedDay} · {dayLesson.title}</strong><small>{completedDays} / 28 日已完成 · 点击切换学习日</small></span><ChevronRight size={18}/></summary>
                     <div className="day-picker" role="list" aria-label="28 天课程">
                       {dailyLessons.map((lesson) => {
                         const progress = s.taskDays[`day-${lesson.day}`] || [];
                         const complete = progress.length === 5;
-                        return (
-                          <button
-                            key={lesson.day}
-                            className={
-                              s.selectedDay === lesson.day ? "current" : ""
-                            }
-                            onClick={() => selectDay(lesson.day)}
-                            aria-label={`第 ${lesson.day} 日：${lesson.title}`}
-                          >
-                            <span>{complete ? <Check size={14} /> : lesson.day}</span>
-                            <small>{lesson.stage}</small>
-                          </button>
-                        );
+                        return <button key={lesson.day} className={s.selectedDay === lesson.day ? "current" : ""} onClick={() => selectDay(lesson.day)} aria-label={`第 ${lesson.day} 日：${lesson.title}`}><span>{complete ? <Check size={14} /> : lesson.day}</span><small>{lesson.stage}</small></button>;
                       })}
                     </div>
-                  </section>
+                  </details>
                   <div className="two-col day-workspace">
                     <section className="panel">
                       <div className="section-heading">
@@ -1553,6 +1538,10 @@ export default function App() {
               )}
               {page === 4 && (
                 <>
+                  <section className="panel library-start">
+                    <div><div className="eyebrow">START FROM TODAY</div><h2>先解决今天的问题，再查完整知识库</h2><p>知识库是做任务时的参考，不需要从头刷完。今天推荐的是 Day {s.selectedDay}「{dayLesson.title}」最相关的内容。</p></div>
+                    <div className="library-recommended">{recommendedKnowledge.slice(0, 3).map((item) => <button key={item.title} onClick={() => setArticle(knowledge.findIndex((entry) => entry.title === item.title))}><BookOpen size={15}/>{item.title}<ArrowUpRight size={14}/></button>)}</div>
+                  </section>
                   <div className="library-toolbar">
                     <div className="library-meta">
                       <strong>{knowledge.length} 篇实用知识</strong>
@@ -1651,6 +1640,11 @@ export default function App() {
               {page === 5 && (
                 <>
                   <Stats />
+                  <section className="growth-tools">
+                    <button className="panel" onClick={() => go(8)}><ClipboardCheck className="green"/><span><strong>能力前测</strong><small>{s.diagnostic.completedAt ? `已完成 · ${diagnosticScore}/${diagnosticQuestions.length}` : "用 12 题确认你的起点"}</small></span><ArrowRight size={16}/></button>
+                    <button className="panel" onClick={() => go(9)}><Bot className="green"/><span><strong>AI 学习导师</strong><small>围绕当前 Day 和项目拆解下一步</small></span><ArrowRight size={16}/></button>
+                    <button className="panel" onClick={() => go(10)}><Trophy className="green"/><span><strong>我的作品集</strong><small>{portfolioCount} 件作品条目已保存</small></span><ArrowRight size={16}/></button>
+                  </section>
                   <div className="two-col">
                     <section className="panel">
                       <div className="section-heading">
@@ -1673,8 +1667,8 @@ export default function App() {
                           />
                         </div>;
                       })}
-                      <button className="text-button" onClick={() => go(7)}>
-                        去 AI 主线补齐能力 <ArrowRight size={16} />
+                      <button className="text-button" onClick={openUnifiedPath}>
+                        去综合路径补齐能力 <ArrowRight size={16} />
                       </button>
                     </section>
                     <div>
@@ -1968,21 +1962,7 @@ export default function App() {
               )}
               {page === 7 && (
                 <>
-                  <section className="panel ai-overview">
-                    <div><div className="eyebrow">ONE PRACTICE ROADMAP · 90 DAYS</div><h2>一条路线：每个 AI 能力都落到一个 B2B 动作</h2><p>不再把 AI 和 B2B 分开学。你先用 AI 建立理解与工具能力，再马上把它用于产品、市场、客户研究和获客；最后做出能复核的 AI + B2B 项目。</p></div>
-                    <div className="ai-flow"><span>AI 基础 → LLM → Prompt</span><ArrowRight/><span>Python → API → Agent</span><ArrowRight/><span>自动化 × B2B 获客</span><ArrowRight/><span>真实项目 / 商业验证</span></div>
-                  </section>
-                  <section className="unified-roadmap" aria-label="AI 与 B2B 综合学习路线">
-                    {unifiedRoadmap.map((item) => <article key={item.phase} className="unified-step">
-                      <div className="unified-number">{item.phase}</div>
-                      <div className="unified-main"><small>{item.days}</small><h3><span>AI：{item.ai}</span><ArrowRight size={16}/><span>B2B：{item.b2b}</span></h3><p>{item.outcome}</p><strong>阶段作品：{item.project}</strong></div>
-                      <div className="unified-actions"><button onClick={() => { setAiLessonIndex(aiLessons.findIndex((lesson) => lesson.id === item.lesson)); requestAnimationFrame(() => document.getElementById("ai-core-textbook")?.scrollIntoView({ behavior: "smooth", block: "start" })); }}>学习 AI 概念</button><button onClick={() => { selectPathDay(item.b2bDays); go(2); }}>做对应 B2B 任务</button></div>
-                    </article>)}
-                  </section>
-                  <section className="panel b2b-compass">
-                    <div className="section-heading"><div><div className="eyebrow">B2B STARTER COMPASS</div><h2>B2B 从零开始：先建立这 7 个判断</h2><p>每一项都对应上方路线中的真实任务。看不懂时，先只完成“我该做什么”，再回到概念和案例。</p></div><button className="text-button" onClick={() => { selectPathDay(1); go(2); }}>从 Day 1 开始 <ArrowRight size={16}/></button></div>
-                    <div className="b2b-essential-grid">{b2bEssentials.map((item, index) => <article key={item.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.simple}</p><div><strong>你现在就做：</strong>{item.do}</div><small><b>不要这样做：</b>{item.avoid}</small></article>)}</div>
-                  </section>
+                  <section className="panel path-bridge"><div><div className="eyebrow">AI DEEP DIVE</div><h2>只学习当前阶段需要的 AI 内容</h2><p>先在综合学习路径确定所在阶段，再在这里读概念、跟做练习、完成小项目并使用免费的网页或视频。完成后回到综合路径，衔接对应的 B2B 动作。</p></div><button className="secondary" onClick={openUnifiedPath}>回到综合路径 <ArrowRight size={16}/></button></section>
                   <div className="ai-lesson-tabs" role="tablist" aria-label="AI 核心教材">
                     {aiLessons.map((lesson, index) => <button key={lesson.id} className={aiLessonIndex === index ? "current" : ""} onClick={() => setAiLessonIndex(index)}><small>{lesson.days}</small>{lesson.title}</button>)}
                   </div>
@@ -1995,6 +1975,10 @@ export default function App() {
                       <article><h3>独立练习</h3><p>{aiLesson.exercise}</p></article><article><h3>小项目</h3><p>{aiLesson.miniProject}</p></article>
                       <article><h3>常见错误</h3><ul>{aiLesson.commonMistakes.map((item) => <li key={item}>{item}</li>)}</ul></article><article><h3>自测标准</h3><ul>{aiLesson.check.map((item) => <li key={item}>{item}</li>)}</ul></article>
                     </div>
+                    <section className="ai-resource-section">
+                      <div className="section-heading"><div><div className="eyebrow">FREE LEARNING RESOURCES</div><h2>本模块的免费网页与视频</h2><p>先完成“必学网页”，再按需要观看视频或做拓展练习。所有链接都可免费完成这里指定的学习输出。</p></div><span>{currentAiResources.length} 项</span></div>
+                      <div className="ai-resource-grid">{currentAiResources.map((resource) => <article key={resource.url}><div><span>{resource.kind}</span><small>{resource.provider}</small></div><h3>{resource.title}</h3><dl><div><dt>学习重点</dt><dd>{resource.focus}</dd></div><div><dt>本次学习输出</dt><dd>{resource.output}</dd></div><div><dt>访问条件</dt><dd>{resource.access}</dd></div><div><dt>适用限制</dt><dd>{resource.limit}</dd></div></dl><a className="secondary" href={resource.url} target="_blank" rel="noreferrer">打开免费学习资源 <ArrowUpRight size={16}/></a></article>)}</div>
+                    </section>
                     <div className="lesson-next"><strong>下一步</strong><p>{aiLesson.next}</p><button className="text-button" onClick={() => go(aiLesson.id === "automation" ? 6 : 8)}>完成前测或进入项目中心 <ArrowRight size={16}/></button></div>
                   </section>
                 </>
@@ -2002,7 +1986,7 @@ export default function App() {
               {page === 8 && (
                 <>
                   <section className="panel assessment-intro"><BrainCircuit className="green"/><div><h2>你的能力前测</h2><p>这不是考试，也不会决定你能否学习。它用 12 个基础题判断你现在更适合从哪里起步。答案与结果只保存在当前浏览器。</p></div><span>{s.diagnostic.completedAt ? `已完成 · ${diagnosticScore} / ${diagnosticQuestions.length}` : `第 ${assessmentStep + 1} / ${diagnosticQuestions.length} 题`}</span></section>
-                  {!s.diagnostic.completedAt ? (() => { const item = diagnosticQuestions[assessmentStep]; const [domain, prompt, options] = item; return <section className="panel assessment-card"><div className="eyebrow">{domain}</div><h2>{prompt}</h2><div className="answer-list">{options.map((option, index) => <button key={option} className={s.diagnostic.answers[assessmentStep] === index ? "chosen" : ""} onClick={() => setState((prev) => { const answers = [...prev.diagnostic.answers]; answers[assessmentStep] = index; return active({ ...prev, diagnostic: { ...prev.diagnostic, answers } }); })}><span>{String.fromCharCode(65 + index)}</span>{option}</button>)}</div><div className="actions"><button className="secondary" disabled={assessmentStep === 0} onClick={() => setAssessmentStep(assessmentStep - 1)}>上一题</button><button className="primary" disabled={s.diagnostic.answers[assessmentStep] === undefined} onClick={() => { if (assessmentStep === diagnosticQuestions.length - 1) { setState((prev) => active({ ...prev, diagnostic: { ...prev.diagnostic, completedAt: today() } })); setToast("前测已完成，学习路线已按你的起点生成"); } else setAssessmentStep(assessmentStep + 1); }}>{assessmentStep === diagnosticQuestions.length - 1 ? "生成学习建议" : "下一题"}<ArrowRight size={16}/></button></div></section> })() : <section className="panel assessment-result"><Trophy className="green"/><h2>当前起点：{diagnosticScore <= 4 ? "基础建立期" : diagnosticScore <= 8 ? "可开始实战期" : "可进入项目期"}</h2><p>得分 {diagnosticScore} / {diagnosticQuestions.length}。建议先学习 {diagnosticScore <= 4 ? "AI 基础 → LLM → Prompt，再完成 B2B Day 1–6。" : diagnosticScore <= 8 ? "Prompt、Python 与证据型客户研究，并从项目阶梯 Level 1 开始。" : "API、Agent 与自动化，同时完成 B2B 客户研究项目。"}</p><div className="actions"><button className="primary" onClick={() => go(7)}>打开 AI 学习主线 <ArrowRight size={16}/></button><button className="secondary" onClick={() => { setState((prev) => ({ ...prev, diagnostic: { answers: [] } })); setAssessmentStep(0); }}>重新测试</button></div></section>}
+                  {!s.diagnostic.completedAt ? (() => { const item = diagnosticQuestions[assessmentStep]; const [domain, prompt, options] = item; return <section className="panel assessment-card"><div className="eyebrow">{domain}</div><h2>{prompt}</h2><div className="answer-list">{options.map((option, index) => <button key={option} className={s.diagnostic.answers[assessmentStep] === index ? "chosen" : ""} onClick={() => setState((prev) => { const answers = [...prev.diagnostic.answers]; answers[assessmentStep] = index; return active({ ...prev, diagnostic: { ...prev.diagnostic, answers } }); })}><span>{String.fromCharCode(65 + index)}</span>{option}</button>)}</div><div className="actions"><button className="secondary" disabled={assessmentStep === 0} onClick={() => setAssessmentStep(assessmentStep - 1)}>上一题</button><button className="primary" disabled={s.diagnostic.answers[assessmentStep] === undefined} onClick={() => { if (assessmentStep === diagnosticQuestions.length - 1) { setState((prev) => active({ ...prev, diagnostic: { ...prev.diagnostic, completedAt: today() } })); setToast("前测已完成，学习路线已按你的起点生成"); } else setAssessmentStep(assessmentStep + 1); }}>{assessmentStep === diagnosticQuestions.length - 1 ? "生成学习建议" : "下一题"}<ArrowRight size={16}/></button></div></section> })() : <section className="panel assessment-result"><Trophy className="green"/><h2>当前起点：{diagnosticScore <= 4 ? "基础建立期" : diagnosticScore <= 8 ? "可开始实战期" : "可进入项目期"}</h2><p>得分 {diagnosticScore} / {diagnosticQuestions.length}。建议先学习 {diagnosticScore <= 4 ? "AI 基础 → LLM → Prompt，并完成对应的 B2B 基础教材。" : diagnosticScore <= 8 ? "Prompt、Python 与证据型客户研究，并从项目阶梯 Level 1 开始。" : "API、Agent 与自动化，同时完成 B2B 客户研究项目。"}</p><div className="actions"><button className="primary" onClick={openUnifiedPath}>打开综合学习路径 <ArrowRight size={16}/></button><button className="secondary" onClick={() => { setState((prev) => ({ ...prev, diagnostic: { answers: [] } })); setAssessmentStep(0); }}>重新测试</button></div></section>}
                 </>
               )}
               {page === 9 && (

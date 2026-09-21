@@ -152,13 +152,13 @@ export const projectLadder = [
 export const skillDomains = ["AI 基础", "LLM", "Prompt", "Python", "API", "Agent", "自动化", "B2B", "海外市场", "信息检索"];
 
 export const unifiedRoadmap = [
-  { phase: "01", days: "Day 01–10", ai: "AI 基础", b2b: "B2B 基础与产品认知", b2bDays: 1, lesson: "ai-literacy", outcome: "会区分 AI 能做什么、不能替人决定什么；完成产品—采购链—证据边界的第一张图。", project: "输出《AI 使用边界清单》与一份产品采购链图。" },
-  { phase: "02", days: "Day 11–20", ai: "LLM", b2b: "海外市场与 ICP", b2bDays: 4, lesson: "llm", outcome: "会用上下文、来源和待核实项组织市场资料，避免把模型补全当市场事实。", project: "输出一份可验证 ICP 与证据型研究模板。" },
-  { phase: "03", days: "Day 21–32", ai: "Prompt / AI 工具", b2b: "找客户与潜客判断", b2bDays: 7, lesson: "prompt", outcome: "会把搜索、官网阅读和分级标准写成可复用的 AI 工作说明书。", project: "输出 4 张 Prompt 卡与一份模拟企业筛选表。" },
-  { phase: "04", days: "Day 33–46", ai: "Python", b2b: "客户名单与信息清洗", b2bDays: 19, lesson: "python-data", outcome: "会用代码处理模拟名单的字段、缺失项和异常，不把数据清洗误当商业结论。", project: "完成模拟客户 CSV 清洗器与异常报告。" },
-  { phase: "05", days: "Day 47–56", ai: "API", b2b: "客户研究与资料结构化", b2bDays: 20, lesson: "api", outcome: "会安全调用接口、处理 JSON 与错误，并为企业研究保留输入输出记录。", project: "完成 API 响应检查器与研究数据字段表。" },
-  { phase: "06", days: "Day 57–68", ai: "Agent", b2b: "获客与销售沟通", b2bDays: 16, lesson: "agent", outcome: "会把企业研究拆成受限工具、证据、问题和人工复核节点。", project: "画出 AI 企业研究助手工作流，并完成 3 条模拟资料走查。" },
-  { phase: "07", days: "Day 69–90", ai: "AI 自动化", b2b: "AI + B2B 服务与项目交付", b2bDays: 24, lesson: "automation", outcome: "会串联自动化、客户研究、分级和交付，准备真实企业的小范围验证。", project: "完成 AI + B2B 海外获客系统原型与作品说明。" },
+  { phase: "01", days: "基础阶段 · 完成作品后再继续", ai: "AI 基础", b2b: "B2B 基础与产品认知", b2bDays: 1, lesson: "ai-literacy", outcome: "会区分 AI 能做什么、不能替人决定什么；完成产品—采购链—证据边界的第一张图。", project: "输出《AI 使用边界清单》与一份产品采购链图。" },
+  { phase: "02", days: "理解阶段 · 不按日历硬推进", ai: "LLM", b2b: "海外市场与 ICP", b2bDays: 4, lesson: "llm", outcome: "会用上下文、来源和待核实项组织市场资料，避免把模型补全当市场事实。", project: "输出一份可验证 ICP 与证据型研究模板。" },
+  { phase: "03", days: "练习阶段 · 做出可复用模板", ai: "Prompt / AI 工具", b2b: "找客户与潜客判断", b2bDays: 7, lesson: "prompt", outcome: "会把搜索、官网阅读和分级标准写成可复用的 AI 工作说明书。", project: "输出 4 张 Prompt 卡与一份模拟企业筛选表。" },
+  { phase: "04", days: "双线并行 · 以成果为准", ai: "Python", b2b: "客户名单与信息清洗", b2bDays: 19, lesson: "python-data", outcome: "会用代码处理模拟名单的字段、缺失项和异常，不把数据清洗误当商业结论。", project: "完成模拟客户 CSV 清洗器与异常报告。" },
+  { phase: "05", days: "双线并行 · 以成果为准", ai: "API", b2b: "客户研究与资料结构化", b2bDays: 20, lesson: "api", outcome: "会安全调用接口、处理 JSON 与错误，并为企业研究保留输入输出记录。", project: "完成 API 响应检查器与研究数据字段表。" },
+  { phase: "06", days: "双线并行 · 以成果为准", ai: "Agent", b2b: "获客与销售沟通", b2bDays: 16, lesson: "agent", outcome: "会把企业研究拆成受限工具、证据、问题和人工复核节点。", project: "画出 AI 企业研究助手工作流，并完成 3 条模拟资料走查。" },
+  { phase: "07", days: "整合阶段 · 先小范围验证", ai: "AI 自动化", b2b: "AI + B2B 服务与项目交付", b2bDays: 24, lesson: "automation", outcome: "会串联自动化、客户研究、分级和交付，准备真实企业的小范围验证。", project: "完成 AI + B2B 海外获客系统原型与作品说明。" },
 ] as const;
 
 export const b2bEssentials = [
@@ -169,4 +169,34 @@ export const b2bEssentials = [
   { title: "研究客户：从搜索结果变成有证据的客户档案", simple: "搜索只是入口。客户研究要依次确认企业、产品、渠道角色、能力、联系人线索与未知项。", do: "每家企业按“原文证据—能确认—合理假设—待核实—下一步”写一张研究卡。", avoid: "让 AI 或搜索摘要替代打开原始产品页和公司页。" },
   { title: "个性化获客：先确认下一步，不急着推销", simple: "首封联系的目标不是成交，而是验证产品、流程和角色。内容应和对方公开的产品/客户有关，不能虚构需求。", do: "针对一个合理职位，写 1 句证据型开场、1 个核实问题、1 份可提供资料和 1 个低压力下一步。", avoid: "群发、夸大能力、声称对方正在换供应商，或绕过当地规则获取个人联系方式。" },
   { title: "交付与服务：把学习变成别人能复核的项目", simple: "一份 B2B 获客项目要讲清边界：研究了什么、证据在哪里、哪些尚未核实、下一步由谁做、验收怎样算完成。", do: "用项目中心六步输出产品分析、ICP、名单、分级、开发策略和报价/交付边界。", avoid: "把模拟练习、AI 草稿或未经许可的信息包装成真实商业成果。" },
+] as const;
+
+export type CuratedResource = {
+  lessonId: string;
+  kind: "必学网页" | "视频课程" | "拓展练习";
+  title: string;
+  provider: string;
+  url: string;
+  access: string;
+  focus: string;
+  output: string;
+  limit: string;
+};
+
+export const aiResources: CuratedResource[] = [
+  { lessonId: "ai-literacy", kind: "必学网页", title: "Elements of AI", provider: "University of Helsinki / MinnaLearn", url: "https://www.elementsofai.com/", access: "免费公开课程；可不购买证书学习，注册可保存进度。", focus: "用非数学语言理解 AI、机器学习、神经网络、机会与限制。", output: "完成第 1 章后，用自己的话写出 AI 能做、不能做、必须人工复核的各 3 项。", limit: "课程是通用 AI 素养，不会替代制造业产品与市场事实核验。" },
+  { lessonId: "ai-literacy", kind: "视频课程", title: "Machine Learning Crash Course", provider: "Google for Developers", url: "https://developers.google.com/machine-learning/crash-course", access: "免费官方课程；无需付费。", focus: "通过短视频、互动内容和练习建立机器学习的基本直觉。", output: "只学“Introduction to Machine Learning”部分，记录 3 个术语与它们对 LLM 学习的意义。", limit: "后续模块技术性较强；初学者不必一次完成全部练习。" },
+  { lessonId: "llm", kind: "必学网页", title: "Hugging Face LLM Course · Chapter 1", provider: "Hugging Face", url: "https://huggingface.co/learn/llm-course/chapter1/1", access: "免费公开课程；部分实践功能可选注册免费账户。", focus: "理解 Transformer、tokenizer、模型能力和任务类型的实际位置。", output: "读完第一章，写出 token、模型、训练数据、推理四个词各一句，并标记一个仍不懂的问题。", limit: "含代码与深度学习术语；先读概念，代码可留到 Python 阶段。" },
+  { lessonId: "llm", kind: "视频课程", title: "Hugging Face 官方视频频道", provider: "Hugging Face · YouTube", url: "https://www.youtube.com/@HuggingFace", access: "免费公开视频；无需购买。", focus: "选择与 LLM Course、Transformers 或 Agents 对应的视频，加深抽象概念的直观理解。", output: "选一个 15–30 分钟视频，写“讲了什么、和课程哪个概念对应、对企业研究有什么边界”。", limit: "频道视频难度不一；只选择与当前模块对应的内容，不追求全部观看。" },
+  { lessonId: "prompt", kind: "必学网页", title: "OpenAI Academy", provider: "OpenAI", url: "https://academy.openai.com/", access: "免费公开学习中心；部分内容可能需免费登录，课程不要求购买证书。", focus: "了解如何把 AI 用于学习、研究和实际工作，并关注安全、验证和工作流。", output: "从当前可公开观看内容选一节，按“任务、输入、限制、输出、复核”改写成一张自己的 Prompt 卡。", limit: "内容会更新；以页面当前免费范围为准，不能把示例当作真实企业或市场结论。" },
+  { lessonId: "prompt", kind: "视频课程", title: "ChatGPT Prompt Engineering for Developers：课程导览", provider: "DeepLearningAI · YouTube", url: "https://www.youtube.com/watch?v=H4YK_7MAckk", access: "免费公开 YouTube 视频；无需购买、无需账号即可观看。", focus: "用真实例子认识提示词原则、迭代和 LLM 应用的基本边界。", output: "观看后，把视频中的一个任务改成“有证据的企业资料分类”，并注明不允许编造字段。", limit: "这是导览视频；代码练习只有在理解 API 成本与密钥安全后再做。" },
+  { lessonId: "python-data", kind: "必学网页", title: "CS50’s Introduction to Programming with Python", provider: "Harvard University", url: "https://cs50.harvard.edu/python/", access: "免费大学课程与公开视频；证书为可选项，不需要购买。", focus: "以小练习学习变量、条件、循环、函数、文件与异常处理。", output: "完成 Week 0 的前半部分；用变量和条件写一段“客户资料是否完整”的伪代码。", limit: "作业需要独立完成；不要把 AI 生成答案当作自己的理解。" },
+  { lessonId: "python-data", kind: "视频课程", title: "CS50P Lecture 0：Functions, Variables", provider: "CS50 · YouTube", url: "https://www.youtube.com/watch?v=JP7ITIXGpHk", access: "免费公开 YouTube 视频；无需购买、无需账号即可观看。", focus: "从变量、函数和输入输出开始建立 Python 直觉。", output: "只观看前 30 分钟，抄写并改造一个示例：把用户输入改成“企业名称是否为空”的检查。", limit: "英文授课且节奏较快；看不懂时回到 CS50P 网页的讲义与小练习。" },
+  { lessonId: "python-data", kind: "拓展练习", title: "The Python Tutorial", provider: "Python Software Foundation", url: "https://docs.python.org/3/tutorial/", access: "免费官方文档；无需账号。", focus: "查阅 list、dict、文件读写、异常和模块的准确用法。", output: "阅读 Data Structures 与 Errors and Exceptions 的指定小节，为模拟客户 CSV 写 5 条数据规则。", limit: "它是参考文档，初学者不必从头读完；结合 CS50 的练习使用。" },
+  { lessonId: "api", kind: "必学网页", title: "An overview of HTTP", provider: "MDN Web Docs", url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview", access: "免费公开文档；无需账号。", focus: "理解客户端、服务器、请求、响应、HTTP 方法、状态码与无状态性。", output: "画一张“Python 程序 → API → JSON 响应”的图，并解释 200、401、429、500 各代表什么。", limit: "HTTP 概念不等于获得任何服务的调用权限；密钥、费用与条款要单独确认。" },
+  { lessonId: "api", kind: "视频课程", title: "CS50P 课程视频与练习", provider: "Harvard University", url: "https://cs50.harvard.edu/python/", access: "免费大学课程；无需付费。", focus: "复习函数、文件、异常处理，为 API 小项目建立代码基础。", output: "选择与异常处理、文件相关的一节，记录一个常见错误和一个修复方法。", limit: "不是 API 专课；API 调用仍需按目标服务的官方文档和安全规则执行。" },
+  { lessonId: "agent", kind: "必学网页", title: "Hugging Face Agents Course", provider: "Hugging Face", url: "https://huggingface.co/learn/agents-course/unit0/introduction", access: "免费课程；部分交互与结业功能可能需要免费账户。", focus: "学习 Agent、工具、工作流、框架、评估与最终项目的基本结构。", output: "完成 Unit 1 的概念阅读后，为“企业研究助手”写允许工具、禁止动作、停止条件和人工复核点。", limit: "课程假设已有基础 Python 与 LLM 知识；先完成前序模块再进入代码。" },
+  { lessonId: "agent", kind: "视频课程", title: "Welcome to the Agents Course", provider: "Hugging Face · YouTube", url: "https://www.youtube.com/watch?v=iLVyYDbdSmM", access: "免费公开 YouTube 视频；无需购买、无需账号即可观看。", focus: "建立 Agent 课程的任务边界、学习顺序和项目预期。", output: "看完后写出你的企业研究助手的 3 个允许动作与 3 个禁止动作。", limit: "视频是课程导览；实际代码需在完成 Python 与 LLM 基础后再做。" },
+  { lessonId: "automation", kind: "必学网页", title: "n8n Level 1 Course", provider: "n8n", url: "https://docs.n8n.io/courses/level-one/", access: "免费公开教程；可使用本地或自托管练习，云服务套餐另计。", focus: "理解 trigger、节点、数据转换、条件和工作流的基本做法。", output: "完成入门章节后，画出“模拟客户 CSV → 数据检查 → 待审核研究任务”的流程，不接触真实联系人。", limit: "不要在未理解权限、隐私和失败处理前连接真实邮箱或 CRM。" },
+  { lessonId: "automation", kind: "视频课程", title: "n8n Quick Start：Build Your First Workflow", provider: "n8n · YouTube", url: "https://www.youtube.com/watch?v=4cQWJViybAQ", access: "免费公开 YouTube 视频；无需购买、无需账号即可观看。", focus: "观察触发、节点、数据流和简单工作流如何连接。", output: "暂停视频后画出自己的 B2B 模拟流程，并标出必须人工审核的一步。", limit: "不要照着视频直接连接真实邮箱、CRM 或联系人数据；先用虚构数据练习。" },
 ] as const;
