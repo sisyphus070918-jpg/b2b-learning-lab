@@ -1790,8 +1790,37 @@ blockquote span {
 .lesson-next p { flex: 1; min-width: 220px; }
 .project-ladder { margin-bottom: 22px; }
 .ladder-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 0; }
-.ladder-grid article { min-height: 175px; }
-.ladder-grid span { display: block; margin-top: 10px; color: #759077; font-size: 12px; }
+.ladder-grid button {
+  min-height: 175px;
+  padding: 16px;
+  border: 1px solid #e0e8de;
+  border-radius: 8px;
+  background: #f9fbf8;
+  color: #586c5a;
+  text-align: left;
+}
+.ladder-grid button.current { border-color: #2c7b57; background: #ebf5ec; box-shadow: inset 0 0 0 1px #b9dcc3; }
+.ladder-grid button:hover { border-color: #9ec7aa; }
+.ladder-grid button small { display: block; color: #809181; font-size: 12px; }
+.ladder-grid button h3 { margin: 8px 0; color: #355d43; font-size: 16px; }
+.ladder-grid button p { margin: 0; color: #586c5a; font-size: 14px; line-height: 1.7; }
+.ladder-grid button span { display: block; margin-top: 10px; color: #759077; font-size: 12px; }
+.ladder-submission { margin: -8px 0 22px; padding: 24px; }
+.ladder-submission-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+.ladder-submission-heading h2 { margin: 8px 0 5px; font-size: 21px; }
+.ladder-submission-heading p { color: #617362; font-size: 14px; }
+.ladder-submission-heading > span { color: #8a9a8b; font-size: 12px; }
+.submission-grid { display: grid; grid-template-columns: 1fr 1.35fr 1fr; gap: 12px; margin: 18px 0; }
+.submission-grid article { padding: 15px; border: 1px solid #e1e9df; border-radius: 8px; background: #fbfcfa; }
+.submission-grid small { color: #357054; font-size: 12px; font-weight: 700; }
+.submission-grid p, .submission-grid li { color: #5b705e; font-size: 13px; line-height: 1.75; }
+.submission-grid p { margin: 7px 0 0; }
+.submission-grid ul { display: grid; gap: 7px; margin: 8px 0 0; padding: 0; list-style: none; }
+.submission-grid li { display: flex; gap: 7px; align-items: flex-start; }
+.submission-grid li svg { flex-shrink: 0; margin-top: 4px; color: #3c8d66; }
+.ladder-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+.ladder-actions button { display: inline-flex; align-items: center; gap: 7px; }
+.ladder-submission .micro { margin: 14px 0 0; }
 .assessment-intro > svg,
 .mentor-context > svg,
 .portfolio-intro > svg { grid-row: 1 / span 2; width: 42px; height: 42px; }
@@ -1978,6 +2007,7 @@ footer span {
   .lesson-summary,
   .deep-grid,
   .ladder-grid,
+  .submission-grid,
   .portfolio-grid {
     grid-template-columns: 1fr;
   }
@@ -2014,6 +2044,10 @@ footer span {
   .phase-actions { align-items: stretch; flex-direction: column; }
   .phase-actions button { justify-content: center; }
   .b2b-compass .b2b-essential-grid { padding: 14px; }
+  .ladder-submission { padding: 20px; }
+  .ladder-submission-heading { flex-direction: column; gap: 5px; }
+  .ladder-actions { align-items: stretch; flex-direction: column; }
+  .ladder-actions button { justify-content: center; }
   .chapter-card {
     grid-template-columns: 1fr;
   }

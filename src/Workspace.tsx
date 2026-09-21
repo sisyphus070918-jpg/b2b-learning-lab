@@ -109,6 +109,15 @@ const projectHints = [
   "写出目标职位、首轮沟通切入点、后续跟进与下一步。",
   "报价指你的研究服务费。写出金额 / 币种、工作范围、工期、验收标准与不包含的服务。",
 ];
+const projectSubmissionGuides = [
+  { deliverable: "一张“事实—假设—待核实”表，以及你使用的 Prompt。", checklist: ["至少列出 5 条产品事实，并保留原始资料出处。", "把无法证明的内容明确写为假设或待核实。", "说明 AI 的输出经过了哪一步人工复核。"], next: "完成后，把表格保存为 Markdown 或 PDF，再开始 Python 数据清洗。" },
+  { deliverable: "一个模拟客户 CSV、清洗后的 CSV 和异常清单。", checklist: ["原始数据与清洗结果分开保留。", "异常清单写明空值、重复值或格式错误。", "脚本或伪代码能让别人理解处理规则。"], next: "完成后，学习 HTTP 与 JSON，再做 API 响应检查器。" },
+  { deliverable: "代码、一次成功响应记录和一次错误处理记录。", checklist: ["只使用公开测试接口或你有权使用的接口。", "不在代码、截图或日志中出现真实密钥。", "说明状态码、关键字段和失败时的处理。"], next: "完成后，用同样的输入—输出—错误记录方式设计 Agent。" },
+  { deliverable: "企业研究助手工作流图、3 条模拟研究卡和人工复核记录。", checklist: ["写清允许工具、禁止动作和停止条件。", "每条研究卡有来源、未知项和下一步验证问题。", "助手不能自动发送邮件或虚构联系人、采购意向。"], next: "完成后，进入客户研究系统，把 AI 能力放进完整 B2B 流程。" },
+  { deliverable: "ICP、5 家模拟或有来源的企业清单、A/B/C 分级和开发策略。", checklist: ["每家企业都标明资料来源与研究日期。", "分级理由对应 ICP 条件，而不是只看企业规模。", "首轮沟通只请求合理的下一步验证，不承诺未经证实的能力。"], next: "使用下方“模拟接单”六步表单提交一份完整方案，再保存到作品集。" },
+  { deliverable: "自动化流程图、模拟输入输出、异常分支和人工审核日志。", checklist: ["每步说明输入、输出、负责人和失败处理。", "不连接真实邮箱、CRM 或联系人数据。", "把自动动作与必须人工批准的动作区分开。"], next: "完成后，整合前五级作品，准备最终演示项目。" },
+  { deliverable: "一套端到端模拟演示：流程图、样例数据、研究报告、复核日志和作品说明。", checklist: ["展示从产品资料到研究结论的完整证据链。", "明确哪些数据是模拟、哪些尚待验证。", "作品说明写清目标、方法、限制和下一步验证计划。"], next: "用下方“模拟接单”完成提交，再到“我的作品集”保存一个可展示条目。" },
+] as const;
 function initialPage() {
   const index = routes.indexOf(location.hash.slice(1));
   return index < 0 ? 0 : index;
@@ -136,6 +145,7 @@ export default function App() {
   const [article, setArticle] = useState<number | null>(null);
   const [toast, setToast] = useState("");
   const [projectStep, setProjectStep] = useState(0);
+  const [ladderLevel, setLadderLevel] = useState(0);
   const [pathMode, setPathMode] = useState<"unified" | "course" | "resources">("unified");
   const [roadmapPhase, setRoadmapPhase] = useState(0);
   const [resourceCategory, setResourceCategory] = useState("全部");
@@ -211,6 +221,8 @@ export default function App() {
   const portfolioCount = Object.keys(s.portfolio).length;
   const aiLesson = aiLessons[aiLessonIndex];
   const focusedRoadmapPhase = unifiedRoadmap[roadmapPhase];
+  const focusedLadder = projectLadder[ladderLevel];
+  const focusedSubmissionGuide = projectSubmissionGuides[ladderLevel];
   const currentAiResources = aiResources.filter((item) => item.lessonId === aiLesson.id);
   const skillLevel = (domain: string) => {
     const evidence = s.skillEvidence[domain] || 0;
@@ -465,7 +477,7 @@ export default function App() {
             <Globe2 size={26} />
           </span>
           <div>
-            出海研习社<small>AI × B2B PRACTICE LAB</small>
+            宇轩的学习社<small>AI × B2B PRACTICE LAB</small>
           </div>
         </div>
         <nav aria-label="主导航">
@@ -1798,16 +1810,22 @@ export default function App() {
                 <>
                   <section className="panel project-ladder">
                     <div className="section-heading">
-                      <div><h2>项目阶梯</h2><p>先完成小而可复核的作品，再进入 B2B 客户研究与自动化交付。</p></div>
+                      <div><h2>项目阶梯</h2><p>先选择一个级别，再按提交清单完成可复核的作品。不要跳级追求“大项目”。</p></div>
                       <span>{Object.values(s.projects).filter((item) => item.submitted).length} 个 B2B 项目已提交</span>
                     </div>
                     <div className="ladder-grid">
-                      {projectLadder.map(([levelName, title, outcome, tools]) => (
-                        <article key={levelName}><small>{levelName}</small><h3>{title}</h3><p>{outcome}</p><span>{tools}</span></article>
+                      {projectLadder.map(([levelName, title, outcome, tools], index) => (
+                        <button className={ladderLevel === index ? "current" : ""} key={levelName} onClick={() => setLadderLevel(index)}><small>{levelName}</small><h3>{title}</h3><p>{outcome}</p><span>{tools}</span></button>
                       ))}
                     </div>
                   </section>
-                  <div className="project-brief">
+                  <section className="panel ladder-submission">
+                    <div className="ladder-submission-heading"><div><span className="pill">{focusedLadder[0]} 提交指南</span><h2>{focusedLadder[1]}</h2><p>完成的标准不是“看过课程”，而是交出能让别人检查过程和边界的材料。</p></div><span>当前选择</span></div>
+                    <div className="submission-grid"><article><small>需要提交</small><p>{focusedSubmissionGuide.deliverable}</p></article><article><small>提交前自查</small><ul>{focusedSubmissionGuide.checklist.map((item) => <li key={item}><CheckCircle2 size={15}/>{item}</li>)}</ul></article><article><small>完成后下一步</small><p>{focusedSubmissionGuide.next}</p></article></div>
+                    <div className="ladder-actions"><button className="primary" onClick={() => { if (ladderLevel >= 4) document.getElementById("simulation-project")?.scrollIntoView({ behavior: "smooth", block: "start" }); else openAiTextbook(["prompt", "python-data", "api", "agent"][ladderLevel]); }}>{ladderLevel >= 4 ? "前往模拟接单提交" : "打开对应学习与练习"}<ArrowRight size={16}/></button><button className="secondary" onClick={() => download(`${focusedLadder[0]}-${focusedLadder[1]}-提交模板.md`, `# ${focusedLadder[0]}｜${focusedLadder[1]}\n\n## 需要提交\n${focusedSubmissionGuide.deliverable}\n\n## 提交前自查\n${focusedSubmissionGuide.checklist.map((item) => `- [ ] ${item}`).join("\n")}\n\n## 我的作品链接或文件位置\n- \n\n## 复核记录\n- 我确认哪些内容来自资料：\n- 我标记了哪些待核实项：\n- 下一步：\n`, "text/markdown")}>下载提交模板 <Download size={16}/></button></div>
+                    <p className="micro">Level 1–4 的作品由你下载模板后保存在本地或自己的代码仓库；Level 5、Level 6 与 Final 可继续用下方“模拟接单”六步表单提交并保存到作品集。</p>
+                  </section>
+                  <div className="project-brief" id="simulation-project">
                     <div>
                       <div className="eyebrow">CLIENT BRIEF · 模拟需求</div>
                       <h2>
