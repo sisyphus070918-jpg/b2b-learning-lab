@@ -21,6 +21,12 @@ import {
   CheckCircle2,
   Clock3,
   PencilLine,
+  BrainCircuit,
+  ClipboardCheck,
+  Bot,
+  FolderKanban,
+  Trophy,
+  Send,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
@@ -40,6 +46,7 @@ import { getCourseResources, stageHandbooks } from "./courseEnhancements";
 import { useLearning, today, active, streak, download } from "./store";
 import type { Answer, State } from "./store";
 import { useAgentTools } from "./useAgentTools";
+import { aiLessons, diagnosticQuestions, projectLadder, skillDomains } from "./learningBlueprint";
 const pageNames = [
   "学习总览",
   "学习路径",
@@ -47,7 +54,11 @@ const pageNames = [
   "案例训练",
   "知识库",
   "学习进度",
-  "模拟接单",
+  "项目中心",
+  "AI 学习主线",
+  "能力前测",
+  "AI 学习导师",
+  "我的作品集",
 ];
 const routes = [
   "overview",
@@ -57,6 +68,10 @@ const routes = [
   "library",
   "progress",
   "projects",
+  "ai",
+  "assessment",
+  "mentor",
+  "portfolio",
 ];
 const icons = [
   LayoutDashboard,
@@ -66,6 +81,10 @@ const icons = [
   Library,
   BarChart3,
   BriefcaseBusiness,
+  BrainCircuit,
+  ClipboardCheck,
+  Bot,
+  Trophy,
 ];
 const blankAnswer = (): Answer => ({
   type: "",
@@ -96,6 +115,17 @@ function initialPage() {
 }
 const stageForDay = (day: number) =>
   [3, 6, 9, 12, 15, 18, 23, 28].findIndex((end) => day <= end);
+const mentorReply = (question: string, selectedDay: number) => {
+  const q = question.toLowerCase();
+  const context = dailyLessons[selectedDay - 1];
+  if (q.includes("不懂") || q.includes("是什么") || q.includes("什么意思"))
+    return `先用今天的任务来理解：${context.title}。把问题拆成“我已确认的事实、我的假设、还需要谁来确认”三列；先完成一行，再继续扩展。`;
+  if (q.includes("代码") || q.includes("python") || q.includes("报错"))
+    return "请先保留完整报错信息、出错代码的最小片段、输入样例和你预期的结果。不要粘贴密钥。先用模拟 CSV 或 JSON 复现，再逐行检查文件路径、字段名和数据类型。";
+  if (q.includes("客户") || q.includes("开发") || q.includes("邮件"))
+    return "先不要直接发信。确认目标企业的产品页、商业角色和相关证据；把不能证明的采购需求标为待核实。再为一个合理职位写一条只请求下一步验证的个性化草稿。";
+  return `你现在处于 Day ${selectedDay}「${context.title}」。请先写出你想得到的输出、已有资料和最担心出错的地方。我会按“概念 → 一个示例 → 可执行练习 → 自测”帮你拆解。`;
+};
 export default function App() {
   const { state: s, setState, storageError } = useLearning();
   const [page, setPage] = useState(initialPage);
@@ -108,6 +138,9 @@ export default function App() {
   const [projectStep, setProjectStep] = useState(0);
   const [pathMode, setPathMode] = useState<"course" | "resources">("course");
   const [resourceCategory, setResourceCategory] = useState("全部");
+  const [aiLessonIndex, setAiLessonIndex] = useState(0);
+  const [assessmentStep, setAssessmentStep] = useState(0);
+  const [mentorDraft, setMentorDraft] = useState("");
   const go = (n: number) => {
     setPage(n);
     location.hash = routes[n];
@@ -166,6 +199,17 @@ export default function App() {
       ),
   ).length;
   const skills = s.lessons.length;
+  const diagnosticScore = s.diagnostic.answers.reduce(
+    (total, answer, index) => total + (answer === diagnosticQuestions[index]?.[3] ? 1 : 0),
+    0,
+  );
+  const portfolioCount = Object.keys(s.portfolio).length;
+  const aiLesson = aiLessons[aiLessonIndex];
+  const skillLevel = (domain: string) => {
+    const evidence = s.skillEvidence[domain] || 0;
+    const diagnosticBoost = s.diagnostic.completedAt ? Math.min(1, Math.floor(diagnosticScore / 5)) : 0;
+    return Math.min(3, evidence + diagnosticBoost);
+  };
   const level =
     skills >= 8
       ? "项目实践者"
@@ -192,6 +236,32 @@ export default function App() {
     });
   const selectDay = (day: number) =>
     setState((prev) => ({ ...prev, selectedDay: day }));
+  const markAiLessonPracticed = (lessonId: string) => {
+    const domains: Record<string, string> = { "ai-literacy": "AI 基础", llm: "LLM", prompt: "Prompt", "python-data": "Python", api: "API", agent: "Agent", automation: "自动化" };
+    const domain = domains[lessonId] || "AI 基础";
+    setState((prev) =>
+      active({
+        ...prev,
+        skillEvidence: { ...prev.skillEvidence, [domain]: Math.min(3, (prev.skillEvidence[domain] || 0) + 1) },
+      }),
+    );
+    setToast("已记录一次实践证据；技能等级还会结合前测与项目完成情况更新");
+  };
+  const askMentor = () => {
+    const prompt = mentorDraft.trim();
+    if (!prompt) return;
+    setState((prev) =>
+      active({
+        ...prev,
+        mentorMessages: [
+          ...prev.mentorMessages,
+          { id: crypto.randomUUID(), role: "user", text: prompt, date: today() },
+          { id: crypto.randomUUID(), role: "mentor", text: mentorReply(prompt, prev.selectedDay), date: today() },
+        ],
+      }),
+    );
+    setMentorDraft("");
+  };
   const selectPathDay = (day: number) => {
     const boundedDay = Math.max(1, Math.min(28, day));
     const targetLesson = dailyLessons[boundedDay - 1];
@@ -378,7 +448,7 @@ export default function App() {
             <Globe2 size={26} />
           </span>
           <div>
-            出海研习社<small>B2B LEARNING LAB</small>
+            出海研习社<small>AI × B2B PRACTICE LAB</small>
           </div>
         </div>
         <div className="nav-label">学习工作台</div>
@@ -403,7 +473,7 @@ export default function App() {
           <GraduationCap />
           <strong>从学习者到实践者</strong>
           <p>把每一次判断，变成下一次开发的底气。</p>
-          <span>28 天 · 8 个能力阶段</span>
+          <span>90 天 · AI × B2B 双主线</span>
         </div>
         <div className="profile">
           <span>学</span>
@@ -432,8 +502,8 @@ export default function App() {
               <div className="page-heading">
                 <div>
                   <div className="eyebrow">LEARN. PRACTICE. GO GLOBAL.</div>
-                  <h1>今天，向出海再进一步。</h1>
-                  <p>从看懂一个产品开始，建立你的 B2B 海外获客能力。</p>
+                  <h1>AI × B2B 实战学习平台</h1>
+                  <p>从 AI 零基础，到 AI 自动化，再到 AI + B2B 实战。每一步都要留下可验证的学习和项目成果。</p>
                 </div>
                 <span className="date-chip">
                   {new Date().toLocaleDateString("zh-CN", {
@@ -461,11 +531,11 @@ export default function App() {
                     <ArrowUpRight size={18} />
                   </button>
                   <div className="hero-path">
-                    <span>选择学习日</span>
+                    <span>理解概念</span>
                     <ArrowRight />
-                    <span>完成 5 项任务</span>
+                    <span>完成练习与复核</span>
                     <ArrowRight />
-                    <span>保存复盘</span>
+                    <span>沉淀项目与作品集</span>
                   </div>
                 </section>
                 <section className="panel">
@@ -530,11 +600,27 @@ export default function App() {
               </section>
               <div className="bottom-cards">
                 <section className="panel">
+                  <BrainCircuit className="green" />
+                  <h3>先完成能力前测，再从适合你的起点开始</h3>
+                  <p>12 个短题覆盖 AI、代码、B2B、检索和自动化，结果只保存在当前浏览器。</p>
+                  <button className="text-button" onClick={() => go(8)}>
+                    进入能力前测 <ArrowRight size={16} />
+                  </button>
+                </section>
+                <section className="panel">
                   <ScanSearch className="green" />
                   <h3>把“看起来像客户”变成有依据的判断</h3>
                   <p>5 家模拟汽配企业，练习客户角色与 A / B / C 分级。</p>
                   <button className="text-button" onClick={() => go(3)}>
                     进入案例训练 <ArrowRight size={16} />
+                  </button>
+                </section>
+                <section className="panel">
+                  <FolderKanban className="green" />
+                  <h3>90 天双主线：AI 能力与 B2B 实战在项目中交汇</h3>
+                  <p>先学 AI、数据、API 和 Agent，再把工具用于证据型客户研究。</p>
+                  <button className="text-button" onClick={() => go(7)}>
+                    查看 AI 学习主线 <ArrowRight size={16} />
                   </button>
                 </section>
                 <section className="panel">
@@ -561,6 +647,10 @@ export default function App() {
                         "YOUR KNOWLEDGE SHELF",
                         "GROWTH YOU CAN SEE",
                         "FROM BRIEF TO DELIVERY",
+                        "AI LEARNING CORE",
+                        "START WITH YOUR BASELINE",
+                        "CONTEXT-AWARE STUDY SUPPORT",
+                        "BUILD EVIDENCE, SHOW YOUR WORK",
                       ][page]
                     }
                   </div>
@@ -575,6 +665,10 @@ export default function App() {
                         "把常用知识放在手边，让每一次实践都有参考。",
                         "用完成的练习衡量成长，让误判成为下一次的提醒。",
                         "接下一份模拟需求，练习交付一套完整的海外获客方案。",
+                        "从概念、操作到小项目，建立可以服务 B2B 实战的 AI 能力。",
+                        "先识别自己的起点，再获得一条可调整的学习建议。",
+                        "围绕你今天的学习日、技能与项目状态，获得下一步拆解。",
+                        "把完成的项目整理成能用于求职、实习或合作展示的作品说明。",
                       ][page]
                     }
                   </p>
@@ -1563,23 +1657,24 @@ export default function App() {
                         <h2>能力地图</h2>
                         <span>{level}</span>
                       </div>
-                      <p>完成阶段练习后点亮技能，这是学习自评记录。</p>
-                      {stages.map((st, i) => (
-                        <div className="skill-row" key={st.skill}>
+                      <p>等级由前测、练习记录与项目完成共同形成；完成课程本身不会自动证明掌握。</p>
+                      {skillDomains.map((domain) => {
+                        const value = domain === "B2B" ? Math.min(3, s.lessons.length) : skillLevel(domain);
+                        return <div className="skill-row" key={domain}>
                           <div>
-                            <span>{st.skill}</span>
+                            <span>{domain}</span>
                             <small>
-                              {s.lessons.includes(i) ? "练习已完成" : "待练习"}
+                              {value ? `Lv ${value} · 已有学习或实践证据` : "Lv 0 · 待建立证据"}
                             </small>
                           </div>
                           <progress
-                            max={1}
-                            value={s.lessons.includes(i) ? 1 : 0}
+                            max={3}
+                            value={value}
                           />
-                        </div>
-                      ))}
-                      <button className="text-button" onClick={() => go(1)}>
-                        继续提升技能 <ArrowRight size={16} />
+                        </div>;
+                      })}
+                      <button className="text-button" onClick={() => go(7)}>
+                        去 AI 主线补齐能力 <ArrowRight size={16} />
                       </button>
                     </section>
                     <div>
@@ -1706,6 +1801,17 @@ export default function App() {
               )}
               {page === 6 && (
                 <>
+                  <section className="panel project-ladder">
+                    <div className="section-heading">
+                      <div><h2>项目阶梯</h2><p>先完成小而可复核的作品，再进入 B2B 客户研究与自动化交付。</p></div>
+                      <span>{Object.values(s.projects).filter((item) => item.submitted).length} 个 B2B 项目已提交</span>
+                    </div>
+                    <div className="ladder-grid">
+                      {projectLadder.map(([levelName, title, outcome, tools]) => (
+                        <article key={levelName}><small>{levelName}</small><h3>{title}</h3><p>{outcome}</p><span>{tools}</span></article>
+                      ))}
+                    </div>
+                  </section>
                   <div className="project-brief">
                     <div>
                       <div className="eyebrow">CLIENT BRIEF · 模拟需求</div>
@@ -1858,6 +1964,47 @@ export default function App() {
                       </p>
                     </section>
                   )}
+                </>
+              )}
+              {page === 7 && (
+                <>
+                  <section className="panel ai-overview">
+                    <div><div className="eyebrow">90-DAY AI × B2B ROADMAP</div><h2>两条主线，在真实项目中交汇</h2><p>AI 主线依次建立模型、Prompt、Python、API、Agent 与自动化能力；B2B 主线继续使用现有 28 天课程训练产品、市场、客户研究与交付。不要追求“学过”，要留下可复核的练习和项目证据。</p></div>
+                    <div className="ai-flow"><span>AI 基础</span><ArrowRight/><span>LLM / Prompt</span><ArrowRight/><span>Python / API</span><ArrowRight/><span>Agent / 自动化</span><ArrowRight/><span>B2B 项目</span></div>
+                  </section>
+                  <div className="ai-lesson-tabs" role="tablist" aria-label="AI 核心课程">
+                    {aiLessons.map((lesson, index) => <button key={lesson.id} className={aiLessonIndex === index ? "current" : ""} onClick={() => setAiLessonIndex(index)}><small>{lesson.days}</small>{lesson.title}</button>)}
+                  </div>
+                  <section className="panel deep-lesson">
+                    <div className="section-heading"><div><div className="eyebrow">{aiLesson.days} · 在线教材</div><h2>{aiLesson.title}</h2></div><button className="secondary" onClick={() => markAiLessonPracticed(aiLesson.id)}><Check size={16}/>记录一次练习</button></div>
+                    <div className="lesson-summary"><div><small>学习目标</small><p>{aiLesson.outcome}</p></div><div><small>前置知识</small><p>{aiLesson.prerequisite}</p></div><div><small>一句话理解</small><p>{aiLesson.oneLine}</p></div></div>
+                    <div className="deep-grid">
+                      <article><h3>小白解释</h3><p>{aiLesson.beginner}</p></article><article><h3>专业解释</h3><p>{aiLesson.professional}</p></article>
+                      <article><h3>真实工作案例</h3><p>{aiLesson.example}</p></article><article><h3>跟我做</h3><ol>{aiLesson.followAlong.map((step) => <li key={step}>{step}</li>)}</ol></article>
+                      <article><h3>独立练习</h3><p>{aiLesson.exercise}</p></article><article><h3>小项目</h3><p>{aiLesson.miniProject}</p></article>
+                      <article><h3>常见错误</h3><ul>{aiLesson.commonMistakes.map((item) => <li key={item}>{item}</li>)}</ul></article><article><h3>自测标准</h3><ul>{aiLesson.check.map((item) => <li key={item}>{item}</li>)}</ul></article>
+                    </div>
+                    <div className="lesson-next"><strong>下一步</strong><p>{aiLesson.next}</p><button className="text-button" onClick={() => go(aiLesson.id === "automation" ? 6 : 8)}>完成前测或进入项目中心 <ArrowRight size={16}/></button></div>
+                  </section>
+                </>
+              )}
+              {page === 8 && (
+                <>
+                  <section className="panel assessment-intro"><BrainCircuit className="green"/><div><h2>你的能力前测</h2><p>这不是考试，也不会决定你能否学习。它用 12 个基础题判断你现在更适合从哪里起步。答案与结果只保存在当前浏览器。</p></div><span>{s.diagnostic.completedAt ? `已完成 · ${diagnosticScore} / ${diagnosticQuestions.length}` : `第 ${assessmentStep + 1} / ${diagnosticQuestions.length} 题`}</span></section>
+                  {!s.diagnostic.completedAt ? (() => { const item = diagnosticQuestions[assessmentStep]; const [domain, prompt, options] = item; return <section className="panel assessment-card"><div className="eyebrow">{domain}</div><h2>{prompt}</h2><div className="answer-list">{options.map((option, index) => <button key={option} className={s.diagnostic.answers[assessmentStep] === index ? "chosen" : ""} onClick={() => setState((prev) => { const answers = [...prev.diagnostic.answers]; answers[assessmentStep] = index; return active({ ...prev, diagnostic: { ...prev.diagnostic, answers } }); })}><span>{String.fromCharCode(65 + index)}</span>{option}</button>)}</div><div className="actions"><button className="secondary" disabled={assessmentStep === 0} onClick={() => setAssessmentStep(assessmentStep - 1)}>上一题</button><button className="primary" disabled={s.diagnostic.answers[assessmentStep] === undefined} onClick={() => { if (assessmentStep === diagnosticQuestions.length - 1) { setState((prev) => active({ ...prev, diagnostic: { ...prev.diagnostic, completedAt: today() } })); setToast("前测已完成，学习路线已按你的起点生成"); } else setAssessmentStep(assessmentStep + 1); }}>{assessmentStep === diagnosticQuestions.length - 1 ? "生成学习建议" : "下一题"}<ArrowRight size={16}/></button></div></section> })() : <section className="panel assessment-result"><Trophy className="green"/><h2>当前起点：{diagnosticScore <= 4 ? "基础建立期" : diagnosticScore <= 8 ? "可开始实战期" : "可进入项目期"}</h2><p>得分 {diagnosticScore} / {diagnosticQuestions.length}。建议先学习 {diagnosticScore <= 4 ? "AI 基础 → LLM → Prompt，再完成 B2B Day 1–6。" : diagnosticScore <= 8 ? "Prompt、Python 与证据型客户研究，并从项目阶梯 Level 1 开始。" : "API、Agent 与自动化，同时完成 B2B 客户研究项目。"}</p><div className="actions"><button className="primary" onClick={() => go(7)}>打开 AI 学习主线 <ArrowRight size={16}/></button><button className="secondary" onClick={() => { setState((prev) => ({ ...prev, diagnostic: { answers: [] } })); setAssessmentStep(0); }}>重新测试</button></div></section>}
+                </>
+              )}
+              {page === 9 && (
+                <>
+                  <section className="panel mentor-context"><Bot className="green"/><div><h2>AI 学习导师</h2><p>导师会以你当前的学习日、已提交项目、能力前测和学习记录为背景给出下一步。它不访问外部账号，不代替你核实企业、法规、联系人或商业事实。</p></div><span>当前：Day {s.selectedDay} · {dayLesson.title}</span></section>
+                  <section className="panel mentor-chat"><div className="mentor-suggestions"><button onClick={() => setMentorDraft("这是什么意思？请用更简单的例子解释今天的概念。")}>这是什么意思？</button><button onClick={() => setMentorDraft("给我一个更简单的练习，并告诉我怎样自测。")}>给我一个更简单的练习</button><button onClick={() => setMentorDraft("这个项目下一步怎么办？")}>这个项目下一步怎么办？</button></div><div className="message-list">{s.mentorMessages.length ? s.mentorMessages.slice(-8).map((message) => <article className={message.role} key={message.id}><small>{message.role === "mentor" ? "学习导师" : "我"} · {message.date}</small><p>{message.text}</p></article>) : <div className="empty"><Bot/><p>先输入一个具体问题。描述你已有的材料、想得到的输出和卡住的地方，回答会更有用。</p></div>}</div><label className="field">我想问<textarea rows={4} value={mentorDraft} onChange={(event) => setMentorDraft(event.target.value)} placeholder="例如：我不知道怎样区分已确认事实和合理假设。"/></label><button className="primary" onClick={askMentor}><Send size={16}/>请导师拆解下一步</button></section>
+                </>
+              )}
+              {page === 10 && (
+                <>
+                  <section className="panel portfolio-intro"><Trophy className="green"/><div><h2>我的作品集</h2><p>作品集保存的是你完成项目时的目标、方法、证据与结果说明。它不是自动生成的“能力证明”；提交前应由你复核并补充真实链接、截图与可公开材料。</p></div><span>{portfolioCount} 件已保存</span></section>
+                  <section className="panel"><div className="section-heading"><div><h2>从当前模拟接单项目生成作品条目</h2><p>仅在方案已提交后可保存。保存后可导出 JSON；任何真实企业信息应先确认授权与公开范围。</p></div><button className="primary" disabled={!project.submitted} onClick={() => { setState((prev) => active({ ...prev, portfolio: { ...prev.portfolio, [`brief-${prev.projectIndex}`]: { summary: `${brief.name}：从产品分析、ICP 到客户分级和开发策略的模拟海外获客方案。`, evidence: "模拟项目字段、证据边界与交付前自查已保留在浏览器学习记录中。", demo: "可在本站项目中心打开；如需公开展示，请另行补充经授权的截图、GitHub 或 Demo 链接。", savedAt: today() } } })); setToast("作品条目已保存到当前浏览器"); }}><FolderKanban size={16}/>保存当前项目为作品</button></div>{!project.submitted && <p className="micro amber">请先在项目中心完成六步并提交方案，才能保存作品条目。</p>}</section>
+                  <div className="portfolio-grid">{Object.entries(s.portfolio).length ? Object.entries(s.portfolio).map(([id, item]) => <article className="panel" key={id}><small>{item.savedAt} · {id}</small><h3>{item.summary}</h3><p><b>证据：</b>{item.evidence}</p><p><b>展示：</b>{item.demo}</p></article>) : <div className="empty"><Trophy/><p>尚无作品。完成一个小项目或模拟接单项目后，将它保存为可展示的说明。</p></div>}</div>
                 </>
               )}
             </>

@@ -20,6 +20,10 @@ export type State = {
   mistakes: { id: string; date: string; score: number }[];
   projectIndex: number;
   projects: Record<string, { fields: string[]; submitted: boolean }>;
+  diagnostic: { answers: number[]; completedAt?: string };
+  skillEvidence: Record<string, number>;
+  portfolio: Record<string, { summary: string; evidence: string; demo: string; savedAt: string }>;
+  mentorMessages: { id: string; role: "user" | "mentor"; text: string; date: string }[];
   icp: string;
   noteDraft: string;
 };
@@ -37,6 +41,10 @@ const fresh = (): State => ({
   mistakes: [],
   projectIndex: 0,
   projects: {},
+  diagnostic: { answers: [] },
+  skillEvidence: {},
+  portfolio: {},
+  mentorMessages: [],
   icp: "",
   noteDraft: "",
 });

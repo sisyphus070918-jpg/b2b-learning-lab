@@ -1609,6 +1609,150 @@ blockquote span {
 .toast svg {
   flex-shrink: 0;
 }
+.ai-overview,
+.assessment-intro,
+.mentor-context,
+.portfolio-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+}
+.ai-overview h2,
+.assessment-intro h2,
+.mentor-context h2,
+.portfolio-intro h2 {
+  margin: 8px 0;
+}
+.ai-flow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #54705b;
+  font-size: 13px;
+}
+.ai-flow span {
+  padding: 7px 9px;
+  border: 1px solid #dce9dc;
+  border-radius: 6px;
+  background: #f3f8f2;
+}
+.ai-lesson-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 3px 2px 12px;
+  margin: 20px 0 4px;
+}
+.ai-lesson-tabs button {
+  flex: 0 0 175px;
+  min-height: 70px;
+  border: 1px solid #dfe8df;
+  border-radius: 8px;
+  background: #fff;
+  color: #56705a;
+  text-align: left;
+  padding: 11px;
+  font-size: 13px;
+}
+.ai-lesson-tabs button small {
+  display: block;
+  color: #8a9b8b;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+.ai-lesson-tabs button.current {
+  background: #eaf4ea;
+  border-color: #257752;
+  color: #186443;
+}
+.lesson-summary,
+.deep-grid,
+.ladder-grid,
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  margin-top: 20px;
+}
+.lesson-summary > div,
+.deep-grid article,
+.ladder-grid article {
+  border: 1px solid #e0e8de;
+  background: #f9fbf8;
+  border-radius: 8px;
+  padding: 16px;
+}
+.lesson-summary small,
+.ladder-grid small,
+.portfolio-grid small {
+  color: #809181;
+  font-size: 12px;
+}
+.lesson-summary p,
+.deep-grid p,
+.deep-grid li,
+.ladder-grid p,
+.ladder-grid span {
+  color: #586c5a;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.deep-grid h3,
+.ladder-grid h3 {
+  margin-bottom: 9px;
+  font-size: 16px;
+}
+.deep-grid ol,
+.deep-grid ul {
+  margin: 0;
+  padding-left: 20px;
+}
+.lesson-next {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 20px;
+  padding: 16px;
+  background: #edf6ec;
+  border-radius: 8px;
+  color: #49644d;
+}
+.lesson-next p { flex: 1; min-width: 220px; }
+.project-ladder { margin-bottom: 22px; }
+.ladder-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 0; }
+.ladder-grid article { min-height: 175px; }
+.ladder-grid span { display: block; margin-top: 10px; color: #759077; font-size: 12px; }
+.assessment-intro > svg,
+.mentor-context > svg,
+.portfolio-intro > svg { grid-row: 1 / span 2; width: 42px; height: 42px; }
+.assessment-intro { grid-template-columns: auto minmax(0, 1fr) auto; }
+.assessment-intro > span,
+.mentor-context > span,
+.portfolio-intro > span { color: #6e836f; font-size: 13px; }
+.assessment-card { max-width: 760px; margin: 22px auto 0; }
+.assessment-card h2 { margin: 8px 0 22px; }
+.answer-list { display: grid; gap: 10px; }
+.answer-list button { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; border: 1px solid #dce7da; border-radius: 7px; background: #fff; padding: 13px; color: #4e6552; }
+.answer-list button > span { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: #eff4ed; font-size: 12px; }
+.answer-list button.chosen { border-color: #23764e; background: #edf7ec; color: #176342; }
+.answer-list button.chosen > span { background: #23764e; color: #fff; }
+.assessment-card .actions { margin-top: 22px; }
+.assessment-result { max-width: 760px; margin: 22px auto 0; }
+.mentor-chat { max-width: 880px; margin: 22px auto 0; }
+.mentor-suggestions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.mentor-suggestions button { border: 1px solid #dce8db; border-radius: 999px; background: #f7fbf6; color: #547157; font-size: 13px; padding: 8px 12px; }
+.message-list { min-height: 190px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.message-list article { max-width: 85%; border-radius: 9px; padding: 13px 15px; }
+.message-list article.user { align-self: flex-end; background: #e6f1e5; color: #37523c; }
+.message-list article.mentor { align-self: flex-start; background: #f5f7f3; border: 1px solid #e1e8dd; color: #526754; }
+.message-list small { color: #879787; font-size: 11px; }
+.message-list p { margin-top: 5px; white-space: pre-wrap; line-height: 1.75; }
+.portfolio-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.portfolio-grid article h3 { margin: 10px 0; font-size: 17px; }
+.portfolio-grid article p { color: #607060; font-size: 14px; line-height: 1.75; }
 /* Reading text stays comfortable across the denser dashboard and learning pages. */
 .brand small {
   font-size: 12px;
@@ -1741,6 +1885,28 @@ footer span {
   }
 }
 @media (max-width: 700px) {
+  .ai-overview,
+  .assessment-intro,
+  .mentor-context,
+  .portfolio-intro {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+  .assessment-intro > svg,
+  .mentor-context > svg,
+  .portfolio-intro > svg {
+    grid-row: auto;
+  }
+  .lesson-summary,
+  .deep-grid,
+  .ladder-grid,
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+  .ai-flow { align-items: flex-start; }
+  .ai-flow > svg { transform: rotate(90deg); }
+  .ai-lesson-tabs button { flex-basis: 160px; }
+  .message-list article { max-width: 100%; }
   .library-meta {
     align-items: flex-start;
     flex-direction: column;
