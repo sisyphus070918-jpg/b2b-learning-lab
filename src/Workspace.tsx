@@ -46,7 +46,7 @@ import { getCourseResources, stageHandbooks } from "./courseEnhancements";
 import { useLearning, today, active, streak, download } from "./store";
 import type { Answer, State } from "./store";
 import { useAgentTools } from "./useAgentTools";
-import { aiLessons, diagnosticQuestions, projectLadder, skillDomains } from "./learningBlueprint";
+import { aiLessons, b2bEssentials, diagnosticQuestions, projectLadder, skillDomains, unifiedRoadmap } from "./learningBlueprint";
 const pageNames = [
   "学习总览",
   "学习路径",
@@ -55,7 +55,7 @@ const pageNames = [
   "知识库",
   "学习进度",
   "项目中心",
-  "AI 学习主线",
+  "综合学习路线",
   "能力前测",
   "AI 学习导师",
   "我的作品集",
@@ -451,23 +451,23 @@ export default function App() {
             出海研习社<small>AI × B2B PRACTICE LAB</small>
           </div>
         </div>
-        <div className="nav-label">学习工作台</div>
         <nav aria-label="主导航">
-          {pageNames.map((n, i) => {
-            const Icon = icons[i];
-            return (
-              <button
-                aria-current={page === i ? "page" : undefined}
-                className={page === i ? "active" : ""}
-                onClick={() => go(i)}
-                key={n}
-              >
-                <Icon size={19} />
-                {n}
-                {i === 6 && <span className="new">实践</span>}
-              </button>
-            );
-          })}
+          {[
+            ["学习与训练", [0, 1, 2, 3, 4, 6]],
+            ["AI 能力", [7, 8, 9]],
+            ["成长档案", [5, 10]],
+          ].map(([label, ids]) => (
+            <div className="nav-group" key={String(label)}>
+              <div className="nav-label">{String(label)}</div>
+              {(ids as number[]).map((i) => {
+                const Icon = icons[i];
+                const n = pageNames[i];
+                return <button aria-current={page === i ? "page" : undefined} className={page === i ? "active" : ""} onClick={() => go(i)} key={n}>
+                  <Icon size={18} />{n}{i === 6 && <span className="new">实践</span>}
+                </button>;
+              })}
+            </div>
+          ))}
         </nav>
         <div className="side-note">
           <GraduationCap />
@@ -620,7 +620,7 @@ export default function App() {
                   <h3>90 天双主线：AI 能力与 B2B 实战在项目中交汇</h3>
                   <p>先学 AI、数据、API 和 Agent，再把工具用于证据型客户研究。</p>
                   <button className="text-button" onClick={() => go(7)}>
-                    查看 AI 学习主线 <ArrowRight size={16} />
+                    查看综合学习路线 <ArrowRight size={16} />
                   </button>
                 </section>
                 <section className="panel">
@@ -647,7 +647,7 @@ export default function App() {
                         "YOUR KNOWLEDGE SHELF",
                         "GROWTH YOU CAN SEE",
                         "FROM BRIEF TO DELIVERY",
-                        "AI LEARNING CORE",
+                        "UNIFIED AI × B2B ROADMAP",
                         "START WITH YOUR BASELINE",
                         "CONTEXT-AWARE STUDY SUPPORT",
                         "BUILD EVIDENCE, SHOW YOUR WORK",
@@ -665,7 +665,7 @@ export default function App() {
                         "把常用知识放在手边，让每一次实践都有参考。",
                         "用完成的练习衡量成长，让误判成为下一次的提醒。",
                         "接下一份模拟需求，练习交付一套完整的海外获客方案。",
-                        "从概念、操作到小项目，建立可以服务 B2B 实战的 AI 能力。",
+                        "把 AI 概念、工具和 B2B 实战任务放进同一条可执行路线。",
                         "先识别自己的起点，再获得一条可调整的学习建议。",
                         "围绕你今天的学习日、技能与项目状态，获得下一步拆解。",
                         "把完成的项目整理成能用于求职、实习或合作展示的作品说明。",
@@ -1969,13 +1969,24 @@ export default function App() {
               {page === 7 && (
                 <>
                   <section className="panel ai-overview">
-                    <div><div className="eyebrow">90-DAY AI × B2B ROADMAP</div><h2>两条主线，在真实项目中交汇</h2><p>AI 主线依次建立模型、Prompt、Python、API、Agent 与自动化能力；B2B 主线继续使用现有 28 天课程训练产品、市场、客户研究与交付。不要追求“学过”，要留下可复核的练习和项目证据。</p></div>
-                    <div className="ai-flow"><span>AI 基础</span><ArrowRight/><span>LLM / Prompt</span><ArrowRight/><span>Python / API</span><ArrowRight/><span>Agent / 自动化</span><ArrowRight/><span>B2B 项目</span></div>
+                    <div><div className="eyebrow">ONE PRACTICE ROADMAP · 90 DAYS</div><h2>一条路线：每个 AI 能力都落到一个 B2B 动作</h2><p>不再把 AI 和 B2B 分开学。你先用 AI 建立理解与工具能力，再马上把它用于产品、市场、客户研究和获客；最后做出能复核的 AI + B2B 项目。</p></div>
+                    <div className="ai-flow"><span>AI 基础 → LLM → Prompt</span><ArrowRight/><span>Python → API → Agent</span><ArrowRight/><span>自动化 × B2B 获客</span><ArrowRight/><span>真实项目 / 商业验证</span></div>
                   </section>
-                  <div className="ai-lesson-tabs" role="tablist" aria-label="AI 核心课程">
+                  <section className="unified-roadmap" aria-label="AI 与 B2B 综合学习路线">
+                    {unifiedRoadmap.map((item) => <article key={item.phase} className="unified-step">
+                      <div className="unified-number">{item.phase}</div>
+                      <div className="unified-main"><small>{item.days}</small><h3><span>AI：{item.ai}</span><ArrowRight size={16}/><span>B2B：{item.b2b}</span></h3><p>{item.outcome}</p><strong>阶段作品：{item.project}</strong></div>
+                      <div className="unified-actions"><button onClick={() => { setAiLessonIndex(aiLessons.findIndex((lesson) => lesson.id === item.lesson)); requestAnimationFrame(() => document.getElementById("ai-core-textbook")?.scrollIntoView({ behavior: "smooth", block: "start" })); }}>学习 AI 概念</button><button onClick={() => { selectPathDay(item.b2bDays); go(2); }}>做对应 B2B 任务</button></div>
+                    </article>)}
+                  </section>
+                  <section className="panel b2b-compass">
+                    <div className="section-heading"><div><div className="eyebrow">B2B STARTER COMPASS</div><h2>B2B 从零开始：先建立这 7 个判断</h2><p>每一项都对应上方路线中的真实任务。看不懂时，先只完成“我该做什么”，再回到概念和案例。</p></div><button className="text-button" onClick={() => { selectPathDay(1); go(2); }}>从 Day 1 开始 <ArrowRight size={16}/></button></div>
+                    <div className="b2b-essential-grid">{b2bEssentials.map((item, index) => <article key={item.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.simple}</p><div><strong>你现在就做：</strong>{item.do}</div><small><b>不要这样做：</b>{item.avoid}</small></article>)}</div>
+                  </section>
+                  <div className="ai-lesson-tabs" role="tablist" aria-label="AI 核心教材">
                     {aiLessons.map((lesson, index) => <button key={lesson.id} className={aiLessonIndex === index ? "current" : ""} onClick={() => setAiLessonIndex(index)}><small>{lesson.days}</small>{lesson.title}</button>)}
                   </div>
-                  <section className="panel deep-lesson">
+                  <section className="panel deep-lesson" id="ai-core-textbook">
                     <div className="section-heading"><div><div className="eyebrow">{aiLesson.days} · 在线教材</div><h2>{aiLesson.title}</h2></div><button className="secondary" onClick={() => markAiLessonPracticed(aiLesson.id)}><Check size={16}/>记录一次练习</button></div>
                     <div className="lesson-summary"><div><small>学习目标</small><p>{aiLesson.outcome}</p></div><div><small>前置知识</small><p>{aiLesson.prerequisite}</p></div><div><small>一句话理解</small><p>{aiLesson.oneLine}</p></div></div>
                     <div className="deep-grid">
