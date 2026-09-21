@@ -137,6 +137,7 @@ export default function App() {
   const [toast, setToast] = useState("");
   const [projectStep, setProjectStep] = useState(0);
   const [pathMode, setPathMode] = useState<"unified" | "course" | "resources">("unified");
+  const [roadmapPhase, setRoadmapPhase] = useState(0);
   const [resourceCategory, setResourceCategory] = useState("全部");
   const [aiLessonIndex, setAiLessonIndex] = useState(0);
   const [assessmentStep, setAssessmentStep] = useState(0);
@@ -209,6 +210,7 @@ export default function App() {
   );
   const portfolioCount = Object.keys(s.portfolio).length;
   const aiLesson = aiLessons[aiLessonIndex];
+  const focusedRoadmapPhase = unifiedRoadmap[roadmapPhase];
   const currentAiResources = aiResources.filter((item) => item.lessonId === aiLesson.id);
   const skillLevel = (domain: string) => {
     const evidence = s.skillEvidence[domain] || 0;
@@ -662,37 +664,36 @@ export default function App() {
                   </div>
                   {pathMode === "unified" ? (
                     <>
-                      <section className="panel ai-overview">
-                        <div>
-                          <div className="eyebrow">ONE INTEGRATED ROADMAP · LEARN BY OUTPUT</div>
-                          <h2>按能力顺序走，不按原来的 28 天硬推进</h2>
-                          <p>前三阶段先建立 AI 理解和 B2B 基础；从 Python 开始，AI 技术线与 B2B 商业线并行。每一阶段都要交付一个能复核的小成果，做不出来就留在当前阶段补基础。</p>
-                        </div>
-                        <div className="ai-flow"><span>AI 基础 → LLM → Prompt</span><ArrowRight/><span>Python / API / Agent</span><ArrowRight/><span>自动化 × 获客</span><ArrowRight/><span>真实项目验证</span></div>
+                      <section className="panel path-intro">
+                        <div className="eyebrow">ONE INTEGRATED ROADMAP · LEARN BY OUTPUT</div>
+                        <h2>只看当前阶段，完成成果再继续</h2>
+                        <p>这条路线不按原来的 28 天倒计时。先建立 AI 与 B2B 的共同基础；从 Python 开始两条能力线并行，最后汇合为可展示的项目。</p>
                       </section>
-                      <section className="unified-roadmap" aria-label="AI 与 B2B 综合学习路线">
-                        {unifiedRoadmap.map((item) => (
-                          <article key={item.phase} className="unified-step">
-                            <div className="unified-number">{item.phase}</div>
-                            <div className="unified-main">
-                              <small>{item.days}</small>
-                              <h3><span>AI：{item.ai}</span><ArrowRight size={16}/><span>B2B：{item.b2b}</span></h3>
-                              <p>{item.outcome}</p>
-                              <strong>阶段作品：{item.project}</strong>
-                            </div>
-                            <div className="unified-actions">
-                              <button onClick={() => openAiTextbook(item.lesson)}>学习 AI 教材</button>
-                              <button onClick={() => openB2bCourse(item.b2bDays)}>打开 B2B 教材</button>
-                              <button onClick={() => { selectPathDay(item.b2bDays); go(2); }}>做对应练习</button>
-                            </div>
-                          </article>
+                      <section className="phase-selector" aria-label="选择当前学习阶段">
+                        {unifiedRoadmap.map((item, index) => (
+                          <button key={item.phase} className={roadmapPhase === index ? "current" : ""} onClick={() => setRoadmapPhase(index)}>
+                            <span>{item.phase}</span><strong>{item.ai}</strong><small>{item.b2b}</small>
+                          </button>
                         ))}
                       </section>
-                      <section className="panel b2b-compass">
-                        <div className="section-heading"><div><div className="eyebrow">B2B STARTER COMPASS</div><h2>B2B 零基础先掌握的 7 个判断</h2><p>这不是另一条独立路线，而是每个 AI 阶段要落到的商业动作。先读“你现在就做”，再打开详细教材完成练习。</p></div><button className="text-button" onClick={() => openB2bCourse(1)}>从 B2B 基础开始 <ArrowRight size={16}/></button></div>
-                        <div className="b2b-essential-grid">{b2bEssentials.map((item, index) => <article key={item.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.simple}</p><div><strong>你现在就做：</strong>{item.do}</div><small><b>不要这样做：</b>{item.avoid}</small></article>)}</div>
+                      <section className="panel phase-focus">
+                        <div className="phase-focus-heading">
+                          <div><span className="phase-kicker">阶段 {focusedRoadmapPhase.phase} · {focusedRoadmapPhase.days}</span><h2>{focusedRoadmapPhase.ai} <ArrowRight size={20}/> {focusedRoadmapPhase.b2b}</h2></div>
+                          <span className="phase-count">{roadmapPhase + 1} / {unifiedRoadmap.length}</span>
+                        </div>
+                        <p className="phase-outcome">{focusedRoadmapPhase.outcome}</p>
+                        <div className="phase-project"><strong>本阶段要留下的成果</strong><span>{focusedRoadmapPhase.project}</span></div>
+                        <div className="phase-actions">
+                          <button className="primary" onClick={() => openAiTextbook(focusedRoadmapPhase.lesson)}><BrainCircuit size={17}/>学习 AI 教材</button>
+                          <button className="secondary" onClick={() => { selectPathDay(focusedRoadmapPhase.b2bDays); go(2); }}><ListChecks size={17}/>做 B2B 练习</button>
+                          <button className="text-button" onClick={() => openB2bCourse(focusedRoadmapPhase.b2bDays)}>查看 B2B 详细教材 <ArrowRight size={16}/></button>
+                        </div>
                       </section>
-                      <section className="panel path-bridge"><div><div className="eyebrow">HOW TO USE THIS PATH</div><h2>卡住时，只打开与你当前阶段有关的那一层</h2><p>“AI 教材”提供概念、免费网页和视频；“B2B 教材”提供行业知识与日课；“对应练习”把内容变成你的记录和作品。你可以反复来回，不需要从 Day 1 重新开始。</p></div><button className="secondary" onClick={() => setPathMode("resources")}>查看免费资源 <ArrowRight size={16}/></button></section>
+                      <details className="panel b2b-compass">
+                        <summary><span><div className="eyebrow">B2B STARTER COMPASS</div><strong>B2B 零基础的 7 个判断参考</strong><small>需要补基础时再展开，不占用主路线的注意力。</small></span><ChevronRight size={18}/></summary>
+                        <div className="b2b-essential-grid">{b2bEssentials.map((item, index) => <article key={item.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.title}</h3><p>{item.simple}</p><div><strong>你现在就做：</strong>{item.do}</div><small><b>不要这样做：</b>{item.avoid}</small></article>)}</div>
+                      </details>
+                      <p className="path-help">找不到资料时，打开“免费学习资源”；不理解产品、市场或客户术语时，打开“B2B 详细教材”。</p>
                     </>
                   ) : pathMode === "course" ? (
                     <>
