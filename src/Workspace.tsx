@@ -27,6 +27,12 @@ import {
   FolderKanban,
   Trophy,
   Send,
+  Headphones,
+  Mic2,
+  Languages,
+  BookmarkCheck,
+  ExternalLink,
+  TimerReset,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
@@ -59,6 +65,7 @@ const pageNames = [
   "能力前测",
   "AI 学习导师",
   "我的作品集",
+  "英语学习工具箱",
 ];
 const routes = [
   "overview",
@@ -72,6 +79,7 @@ const routes = [
   "assessment",
   "mentor",
   "portfolio",
+  "english",
 ];
 const icons = [
   LayoutDashboard,
@@ -85,7 +93,88 @@ const icons = [
   ClipboardCheck,
   Bot,
   Trophy,
+  Languages,
 ];
+const englishTools = [
+  {
+    name: "Echo Loop",
+    type: "听说训练",
+    icon: Mic2,
+    url: "https://github.com/echo-loop/Echo-Loop/releases",
+    platform: "Android APK",
+    use: "选一段 20–60 秒英语音频，先精听，再逐句跟读和录音对比。适合练发音、连读与句子节奏。",
+    output: "保留 3 句你最难复述的原句，写下卡点并完成 3 轮跟读。",
+    boundary: "当前官方发布页提供 Android 安装包；这台 Windows 电脑不能直接安装 APK。",
+    accent: "speak",
+  },
+  {
+    name: "Everyone Can Use English",
+    type: "系统方法",
+    icon: BookOpen,
+    url: "https://1000h.org/",
+    platform: "网页",
+    use: "用“输入、复述、反馈、间隔复习”的方法搭建自己的长期学习系统。它负责方法，不代替每天的实际练习。",
+    output: "从一章中选 1 条原则，写成你明天能执行的一条学习规则。",
+    boundary: "这是网页学习项目，无需安装；阅读进度不会自动同步到本平台。",
+    accent: "method",
+  },
+  {
+    name: "Anki",
+    type: "记忆复习",
+    icon: BookmarkCheck,
+    url: "https://apps.ankiweb.net/",
+    platform: "Windows / 手机 / 网页同步",
+    use: "把今天读到、听到且能复用的表达做成卡片，用间隔重复把短期理解变成长期可调用的表达。",
+    output: "新增 5 张“句子挖空”卡：正面给语境，背面给完整句和音频或来源。",
+    boundary: "软件本体免费。同步服务和各应用商店的可用性以 Anki 官方页面为准。不要只收集孤立单词。",
+    accent: "review",
+  },
+  {
+    name: "Read Frog",
+    type: "网页阅读",
+    icon: Languages,
+    url: "https://www.readfrog.app/",
+    platform: "浏览器扩展",
+    use: "在英文网页中划词、查看释义并积累高频表达。优先用它阅读真实的产品页、新闻或课程资料。",
+    output: "读完一篇 300–600 词材料，整理 5 个表达，并用其中 2 个写自己的句子。",
+    boundary: "扩展需要读取你访问的网页内容，安装前应查看浏览器商店显示的权限与隐私说明。",
+    accent: "read",
+  },
+  {
+    name: "LLPlayer",
+    type: "视频精听",
+    icon: Headphones,
+    url: "https://github.com/umlx5h/LLPlayer/releases",
+    platform: "Windows x64",
+    use: "把公开视频切成短片段，循环播放、对照字幕、暂停复述。适合把一段 YouTube 视频真正学透。",
+    output: "完成 1 个 60–90 秒片段：听写 5 句、复述 1 次、记录 3 个可复用表达。",
+    boundary: "官方项目仍处于早期版本；使用前看发布页的系统要求。只导入你有权观看或使用的视频。",
+    accent: "listen",
+  },
+] as const;
+const englishRoutines = [
+  {
+    id: "quick",
+    time: "20 分钟",
+    title: "每天保持输入与输出",
+    steps: ["Read Frog 读 1 段 150–250 词材料，圈出 3 个表达。", "用 Echo Loop 或手机录音复述其中 2 句。", "把最值得复用的 3 个句子放进 Anki。"],
+    result: "3 张有语境的 Anki 卡 + 1 次短复述",
+  },
+  {
+    id: "deep",
+    time: "45 分钟",
+    title: "精听一段真实视频",
+    steps: ["LLPlayer 选 60–90 秒公开视频：先不看字幕听一遍。", "分句暂停，写下听到的 5 句；再对照字幕修正。", "Echo Loop 跟读 3 句，最后用自己的话复述这段内容。", "将 5 个句子中的高价值表达加入 Anki。"],
+    result: "5 句听写、1 次复述、5 张 Anki 卡",
+  },
+  {
+    id: "system",
+    time: "30 分钟",
+    title: "整理自己的学习系统",
+    steps: ["在 Everyone Can Use English 阅读 1 个主题，只记一个可执行原则。", "选 1 篇真实英文材料，用 Read Frog 做主动阅读。", "把“知道但不会说”的 3 句改为自己的表达并录音。", "用 Anki 安排下次复习。"],
+    result: "1 条学习规则 + 3 句个人表达 + 复习计划",
+  },
+] as const;
 const blankAnswer = (): Answer => ({
   type: "",
   grade: "",
@@ -150,6 +239,7 @@ export default function App() {
   const [roadmapPhase, setRoadmapPhase] = useState(0);
   const [resourceCategory, setResourceCategory] = useState("全部");
   const [aiLessonIndex, setAiLessonIndex] = useState(0);
+  const [englishRoutineId, setEnglishRoutineId] = useState<(typeof englishRoutines)[number]["id"]>("quick");
   const [assessmentStep, setAssessmentStep] = useState(0);
   const [mentorDraft, setMentorDraft] = useState("");
   const go = (n: number) => {
@@ -224,6 +314,7 @@ export default function App() {
   const focusedLadder = projectLadder[ladderLevel];
   const focusedSubmissionGuide = projectSubmissionGuides[ladderLevel];
   const currentAiResources = aiResources.filter((item) => item.lessonId === aiLesson.id);
+  const englishRoutine = englishRoutines.find((routine) => routine.id === englishRoutineId) || englishRoutines[0];
   const skillLevel = (domain: string) => {
     const evidence = s.skillEvidence[domain] || 0;
     const diagnosticBoost = s.diagnostic.completedAt ? Math.min(1, Math.floor(diagnosticScore / 5)) : 0;
@@ -483,6 +574,7 @@ export default function App() {
         <nav aria-label="主导航">
           {[
             ["学习工作台", [0, 1, 2, 3, 4, 6]],
+            ["语言工具", [11]],
             ["我的成长", [5]],
           ].map(([label, ids]) => (
             <div className="nav-group" key={String(label)}>
@@ -641,6 +733,7 @@ export default function App() {
                         "先识别自己的起点，再获得一条可调整的学习建议。",
                         "围绕你今天的学习日、技能与项目状态，获得下一步拆解。",
                         "把完成的项目整理成能用于求职、实习或合作展示的作品说明。",
+                        "把视频、网页、记忆卡和跟读练习组织成一条可执行的英语训练流程。",
                       ][page]
                     }
                   </p>
@@ -2019,6 +2112,40 @@ export default function App() {
                   <section className="panel portfolio-intro"><Trophy className="green"/><div><h2>我的作品集</h2><p>作品集保存的是你完成项目时的目标、方法、证据与结果说明。它不是自动生成的“能力证明”；提交前应由你复核并补充真实链接、截图与可公开材料。</p></div><span>{portfolioCount} 件已保存</span></section>
                   <section className="panel"><div className="section-heading"><div><h2>从当前模拟接单项目生成作品条目</h2><p>仅在方案已提交后可保存。保存后可导出 JSON；任何真实企业信息应先确认授权与公开范围。</p></div><button className="primary" disabled={!project.submitted} onClick={() => { setState((prev) => active({ ...prev, portfolio: { ...prev.portfolio, [`brief-${prev.projectIndex}`]: { summary: `${brief.name}：从产品分析、ICP 到客户分级和开发策略的模拟海外获客方案。`, evidence: "模拟项目字段、证据边界与交付前自查已保留在浏览器学习记录中。", demo: "可在本站项目中心打开；如需公开展示，请另行补充经授权的截图、GitHub 或 Demo 链接。", savedAt: today() } } })); setToast("作品条目已保存到当前浏览器"); }}><FolderKanban size={16}/>保存当前项目为作品</button></div>{!project.submitted && <p className="micro amber">请先在项目中心完成六步并提交方案，才能保存作品条目。</p>}</section>
                   <div className="portfolio-grid">{Object.entries(s.portfolio).length ? Object.entries(s.portfolio).map(([id, item]) => <article className="panel" key={id}><small>{item.savedAt} · {id}</small><h3>{item.summary}</h3><p><b>证据：</b>{item.evidence}</p><p><b>展示：</b>{item.demo}</p></article>) : <div className="empty"><Trophy/><p>尚无作品。完成一个小项目或模拟接单项目后，将它保存为可展示的说明。</p></div>}</div>
+                </>
+              )}
+              {page === 11 && (
+                <>
+                  <section className="english-hero">
+                    <div>
+                      <div className="eyebrow">ENGLISH STUDY TOOLBOX</div>
+                      <h2>把五个工具变成一次完整练习</h2>
+                      <p>不要五个工具同时打开。每次只选一段真实材料，然后完成“理解 → 听说 → 复习”这条闭环。这里收录的是视频中出现的官方项目入口；其中网页、Android 应用、浏览器扩展和 Windows 软件的使用方式不同。</p>
+                    </div>
+                    <div className="english-loop" aria-label="英语学习闭环">
+                      <span>读懂材料</span><ArrowRight size={16}/><span>听说复述</span><ArrowRight size={16}/><span>间隔复习</span>
+                    </div>
+                  </section>
+                  <section className="english-start panel">
+                    <div className="section-heading"><div><h2>先选一套训练</h2><p>选定后按照右侧步骤完成。每天一套即可，完成比堆积工具重要。</p></div><TimerReset className="green" size={22}/></div>
+                    <div className="routine-tabs" role="tablist" aria-label="英语训练时长">
+                      {englishRoutines.map((routine) => <button key={routine.id} role="tab" aria-selected={englishRoutine.id === routine.id} className={englishRoutine.id === routine.id ? "current" : ""} onClick={() => setEnglishRoutineId(routine.id)}><small>{routine.time}</small><strong>{routine.title}</strong></button>)}
+                    </div>
+                    <div className="routine-detail">
+                      <div><span>本次交付物</span><strong>{englishRoutine.result}</strong></div>
+                      <ol>{englishRoutine.steps.map((step) => <li key={step}>{step}</li>)}</ol>
+                    </div>
+                  </section>
+                  <section className="tool-section">
+                    <div className="section-heading"><div><h2>视频中的 5 个工具</h2><p>每个按钮均跳转到官方页面或官方发布页。使用前先看平台、权限和说明；本站不替你安装或收集账号信息。</p></div><span>按学习环节整理</span></div>
+                    <div className="english-tool-grid">
+                      {englishTools.map((tool) => { const Icon = tool.icon; return <article className={`english-tool ${tool.accent}`} key={tool.name}><div className="tool-top"><span className="tool-icon"><Icon size={21}/></span><div><small>{tool.type}</small><h3>{tool.name}</h3></div></div><p>{tool.use}</p><dl><div><dt>完成后留下什么</dt><dd>{tool.output}</dd></div><div><dt>使用方式</dt><dd>{tool.platform}</dd></div><div><dt>注意</dt><dd>{tool.boundary}</dd></div></dl><a href={tool.url} target="_blank" rel="noreferrer">打开官方入口 <ExternalLink size={15}/></a></article>; })}
+                    </div>
+                  </section>
+                  <section className="english-rules panel">
+                    <div><h2>这样用，才会真的进步</h2><p>先选一段你能理解约 70% 的真实材料。遇到所有生词都查，学习会变成翻译；完全听不懂，也没有足够信息可复述。每次训练只保留少量能在下次交流中复用的句子。</p></div>
+                    <ul><li><strong>材料：</strong>优先选择你感兴趣的采访、课程、产品介绍或工作场景视频。</li><li><strong>卡片：</strong>一张卡只解决一个可用表达；卡背保留完整句和来源。</li><li><strong>复述：</strong>允许先看提示，再逐步减少提示；目标是表达意思，不是模仿口音。</li><li><strong>复盘：</strong>每周挑 1 段旧材料，不看字幕再听一次，比较第一次与现在能听懂的内容。</li></ul>
+                  </section>
                 </>
               )}
             </>
