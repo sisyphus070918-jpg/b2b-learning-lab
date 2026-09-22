@@ -642,6 +642,17 @@ export const learningResources = [
     verified: "2026-09",
   },
   {
+    category: "中文课程",
+    provider: "中国大学 MOOC · 西南财经大学",
+    title: "国际贸易实务（西南财经大学）",
+    language: "中文",
+    cost: "按课程页当前学期的开放状态免费学习；需注册账号，认证证书可能收费，完成本站练习不需要购买。",
+    bestFor: "贸易术语、合同拟定、交易磋商、单证、运输、保险、结算与进出口流程。",
+    useWith: "建议配合 Day 10–12 学习。优先学习贸易术语、合同、运输、保险和结算；每完成一章，整理一份询盘或报价检查表，并标出需要向货代、买家或专业人士核实的项目。",
+    url: "https://www.icourse163.org/course/0204SWUFE011-1002532010",
+    verified: "用户提供 · 2026-09；开课与免费范围以课程页当前说明为准",
+  },
+  {
     category: "系统课程",
     provider: "International Trade Centre",
     title: "SME Trade Academy",
