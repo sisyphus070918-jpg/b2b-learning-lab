@@ -97,58 +97,58 @@ const icons = [
 ];
 const englishTools = [
   {
-    name: "Echo Loop",
+    name: "AI Shadowing",
     type: "听说训练",
     icon: Mic2,
-    url: "https://github.com/echo-loop/Echo-Loop/releases",
-    platform: "Android APK",
-    use: "选一段 20–60 秒英语音频，先精听，再逐句跟读和录音对比。适合练发音、连读与句子节奏。",
+    url: "https://aishadowing.net/",
+    platform: "直接网页使用 · 无需安装",
+    use: "粘贴带字幕的 YouTube 视频链接，按句循环播放、跟读和复述。适合练发音、连读与句子节奏。",
     output: "保留 3 句你最难复述的原句，写下卡点并完成 3 轮跟读。",
-    boundary: "当前官方发布页提供 Android 安装包；这台 Windows 电脑不能直接安装 APK。",
+    boundary: "核心网页功能可直接使用；网页端依赖 YouTube 字幕，选视频时先确认有字幕或自动字幕。",
     accent: "speak",
   },
   {
-    name: "Everyone Can Use English",
+    name: "1000 小时英语学习手册",
     type: "系统方法",
     icon: BookOpen,
     url: "https://1000h.org/",
-    platform: "网页",
+    platform: "直接网页使用 · 无需安装",
     use: "用“输入、复述、反馈、间隔复习”的方法搭建自己的长期学习系统。它负责方法，不代替每天的实际练习。",
     output: "从一章中选 1 条原则，写成你明天能执行的一条学习规则。",
     boundary: "这是网页学习项目，无需安装；阅读进度不会自动同步到本平台。",
     accent: "method",
   },
   {
-    name: "Anki",
+    name: "AnkiWeb",
     type: "记忆复习",
     icon: BookmarkCheck,
-    url: "https://apps.ankiweb.net/",
-    platform: "Windows / 手机 / 网页同步",
-    use: "把今天读到、听到且能复用的表达做成卡片，用间隔重复把短期理解变成长期可调用的表达。",
+    url: "https://ankiweb.net/",
+    platform: "直接网页使用 · 需免费账号",
+    use: "在浏览器中复习卡片、创建基础文字卡。用间隔重复把短期理解变成长期可调用的表达。",
     output: "新增 5 张“句子挖空”卡：正面给语境，背面给完整句和音频或来源。",
-    boundary: "软件本体免费。同步服务和各应用商店的可用性以 Anki 官方页面为准。不要只收集孤立单词。",
+    boundary: "网页端可完成基础卡片创建与复习；共享牌组、音频等完整功能需要配合免费的桌面版，但不是完成这里练习的前提。",
     accent: "review",
   },
   {
-    name: "Read Frog",
+    name: "British Council LearnEnglish",
     type: "网页阅读",
     icon: Languages,
-    url: "https://www.readfrog.app/",
-    platform: "浏览器扩展",
-    use: "在英文网页中划词、查看释义并积累高频表达。优先用它阅读真实的产品页、新闻或课程资料。",
+    url: "https://learnenglish.britishcouncil.org/",
+    platform: "直接网页使用 · 无需安装",
+    use: "按水平学习免费的阅读、听力、语法和商务英语材料，并在互动练习中获得即时反馈。",
     output: "读完一篇 300–600 词材料，整理 5 个表达，并用其中 2 个写自己的句子。",
-    boundary: "扩展需要读取你访问的网页内容，安装前应查看浏览器商店显示的权限与隐私说明。",
+    boundary: "从适合自己的级别开始。重点不是做完题，而是把错题里的句子改写成自己的表达。",
     accent: "read",
   },
   {
-    name: "LLPlayer",
+    name: "VOA Learning English",
     type: "视频精听",
     icon: Headphones,
-    url: "https://github.com/umlx5h/LLPlayer/releases",
-    platform: "Windows x64",
-    use: "把公开视频切成短片段，循环播放、对照字幕、暂停复述。适合把一段 YouTube 视频真正学透。",
+    url: "https://learningenglish.voanews.com/",
+    platform: "直接网页使用 · 无需安装",
+    use: "使用面向英语学习者的新闻、视频和音频完成精听。先听主旨，再借助文字稿核对细节并复述。",
     output: "完成 1 个 60–90 秒片段：听写 5 句、复述 1 次、记录 3 个可复用表达。",
-    boundary: "官方项目仍处于早期版本；使用前看发布页的系统要求。只导入你有权观看或使用的视频。",
+    boundary: "材料难度与主题不同，选能听懂约 70% 的内容；用网页播放器手动回退短片段即可进行精听。",
     accent: "listen",
   },
 ] as const;
@@ -157,21 +157,21 @@ const englishRoutines = [
     id: "quick",
     time: "20 分钟",
     title: "每天保持输入与输出",
-    steps: ["Read Frog 读 1 段 150–250 词材料，圈出 3 个表达。", "用 Echo Loop 或手机录音复述其中 2 句。", "把最值得复用的 3 个句子放进 Anki。"],
+    steps: ["在 British Council LearnEnglish 读 1 段 150–250 词材料，圈出 3 个表达。", "用 AI Shadowing 或手机录音复述其中 2 句。", "把最值得复用的 3 个句子放进 AnkiWeb。"],
     result: "3 张有语境的 Anki 卡 + 1 次短复述",
   },
   {
     id: "deep",
     time: "45 分钟",
     title: "精听一段真实视频",
-    steps: ["LLPlayer 选 60–90 秒公开视频：先不看字幕听一遍。", "分句暂停，写下听到的 5 句；再对照字幕修正。", "Echo Loop 跟读 3 句，最后用自己的话复述这段内容。", "将 5 个句子中的高价值表达加入 Anki。"],
+    steps: ["在 VOA Learning English 选 60–90 秒音视频：先不看文字稿听一遍。", "分句回退，写下听到的 5 句；再对照文字稿修正。", "用 AI Shadowing 跟读 3 句，最后用自己的话复述这段内容。", "将 5 个句子中的高价值表达加入 AnkiWeb。"],
     result: "5 句听写、1 次复述、5 张 Anki 卡",
   },
   {
     id: "system",
     time: "30 分钟",
     title: "整理自己的学习系统",
-    steps: ["在 Everyone Can Use English 阅读 1 个主题，只记一个可执行原则。", "选 1 篇真实英文材料，用 Read Frog 做主动阅读。", "把“知道但不会说”的 3 句改为自己的表达并录音。", "用 Anki 安排下次复习。"],
+    steps: ["在 1000 小时英语学习手册阅读 1 个主题，只记一个可执行原则。", "选 1 篇 British Council LearnEnglish 材料，完成主动阅读。", "把“知道但不会说”的 3 句改为自己的表达并录音。", "用 AnkiWeb 安排下次复习。"],
     result: "1 条学习规则 + 3 句个人表达 + 复习计划",
   },
 ] as const;
@@ -2120,7 +2120,7 @@ export default function App() {
                     <div>
                       <div className="eyebrow">ENGLISH STUDY TOOLBOX</div>
                       <h2>把五个工具变成一次完整练习</h2>
-                      <p>不要五个工具同时打开。每次只选一段真实材料，然后完成“理解 → 听说 → 复习”这条闭环。这里收录的是视频中出现的官方项目入口；其中网页、Android 应用、浏览器扩展和 Windows 软件的使用方式不同。</p>
+                      <p>不需要下载任何安装包。每次只选一段真实材料，然后完成“理解 → 听说 → 复习”这条闭环。这里保留视频中的学习思路，并全部换成可直接在浏览器使用的免费入口。</p>
                     </div>
                     <div className="english-loop" aria-label="英语学习闭环">
                       <span>读懂材料</span><ArrowRight size={16}/><span>听说复述</span><ArrowRight size={16}/><span>间隔复习</span>
@@ -2137,7 +2137,7 @@ export default function App() {
                     </div>
                   </section>
                   <section className="tool-section">
-                    <div className="section-heading"><div><h2>视频中的 5 个工具</h2><p>每个按钮均跳转到官方页面或官方发布页。使用前先看平台、权限和说明；本站不替你安装或收集账号信息。</p></div><span>按学习环节整理</span></div>
+                    <div className="section-heading"><div><h2>5 个直接打开就能学的网页</h2><p>每个按钮均跳转到官方网站。除 AnkiWeb 需要免费账号外，其他入口均可直接开始；本站不安装软件，也不收集你的账号信息。</p></div><span>按学习环节整理</span></div>
                     <div className="english-tool-grid">
                       {englishTools.map((tool) => { const Icon = tool.icon; return <article className={`english-tool ${tool.accent}`} key={tool.name}><div className="tool-top"><span className="tool-icon"><Icon size={21}/></span><div><small>{tool.type}</small><h3>{tool.name}</h3></div></div><p>{tool.use}</p><dl><div><dt>完成后留下什么</dt><dd>{tool.output}</dd></div><div><dt>使用方式</dt><dd>{tool.platform}</dd></div><div><dt>注意</dt><dd>{tool.boundary}</dd></div></dl><a href={tool.url} target="_blank" rel="noreferrer">打开官方入口 <ExternalLink size={15}/></a></article>; })}
                     </div>
