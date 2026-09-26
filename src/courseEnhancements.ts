@@ -34,6 +34,7 @@ export const stageHandbooks: Record<string, StageHandbookItem[]> = {
   潜客判断: [
     { term: "来源层级", definition: "不同来源的可信度、用途和时效不同。官网是企业自述，登记信息确认主体，目录用于发现线索。", businessUse: "为每个结论选择合适来源并进行交叉核对。", evidence: "官网、政府/协会、品牌授权、行业目录、社交资料与搜索摘要。", pitfall: "把搜索摘要或 AI 回答当作最终证据。" },
     { term: "证据卡", definition: "记录公司、结论、原文摘要、来源、日期、假设和下一步的标准化研究单元。", businessUse: "让企业判断可以复查、更新和移交。", evidence: "至少一条产品证据和一条角色/能力证据。", pitfall: "只保存链接，不记录链接支持什么结论。" },
+    { term: "十分钟证据阅读", definition: "在固定时限内按产品、业务角色、网络/项目能力、联系/主体的顺序阅读官网，并用证据卡记录结论与缺失。", businessUse: "先决定是否值得继续研究，再投入时间寻找联系人、写开发信或做深度尽调。", evidence: "产品/目录、About/服务/品牌、网络/项目、Contact/法律页的原文摘要、URL、页面类型与核实日期。", pitfall: "从首页口号、网站视觉、搜索摘要或单个职位就推断全国覆盖、采购能力或采购意向。" },
     { term: "商业角色", definition: "企业在供应链中赚钱的方式，如进口、品牌、分销、批发、集成或终端使用。", businessUse: "判断它为什么采购、采购量级和价值诉求。", evidence: "服务对象、条款、品牌来源、渠道网络、项目说明。", pitfall: "根据名称中的 Trading、International 等词直接判断。" },
     { term: "采购能力", definition: "企业具备批量购买、库存、项目供货或持续使用产品的能力。", businessUse: "区分有产品关联与真正值得优先开发。", evidence: "仓储、网点、SKU、销售区域、项目规模和团队配置。", pitfall: "把公司历史长自动等同于当前采购能力。" },
     { term: "A/B/C 分级", definition: "按项目匹配与证据完整度分配研究和开发优先级。", businessUse: "A 类深度开发，B 类先核实，C 类停止当前投入。", evidence: "产品、角色、能力、地区和缺失项的统一规则。", pitfall: "把 A 类误写成已确认有采购意向。" },
