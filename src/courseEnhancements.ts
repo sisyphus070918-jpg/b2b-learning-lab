@@ -38,6 +38,7 @@ export const stageHandbooks: Record<string, StageHandbookItem[]> = {
     { term: "商业角色", definition: "企业在供应链中赚钱的方式，如进口、品牌、分销、批发、集成或终端使用。", businessUse: "判断它为什么采购、采购量级和价值诉求。", evidence: "服务对象、条款、品牌来源、渠道网络、项目说明。", pitfall: "根据名称中的 Trading、International 等词直接判断。" },
     { term: "采购能力", definition: "企业具备批量购买、库存、项目供货或持续使用产品的能力。", businessUse: "区分有产品关联与真正值得优先开发。", evidence: "仓储、网点、SKU、销售区域、项目规模和团队配置。", pitfall: "把公司历史长自动等同于当前采购能力。" },
     { term: "A/B/C 分级", definition: "按项目匹配与证据完整度分配研究和开发优先级。", businessUse: "A 类深度开发，B 类先核实，C 类停止当前投入。", evidence: "产品、角色、能力、地区和缺失项的统一规则。", pitfall: "把 A 类误写成已确认有采购意向。" },
+    { term: "分级决策矩阵", definition: "把产品相关性、商业角色、渠道/项目能力等门槛与证据状态、理由代码、下一步和升级/降级条件放在同一张表的规则工具。", businessUse: "让不同研究者面对相同证据时做出相近的 A/B/C 处置，并让等级直接连接研究投入。", evidence: "Day 7 证据卡中的产品、角色、网络、主体和时效证据；每项附 URL、原文摘要、来源层级与日期。", pitfall: "用员工数、网站设计、公司名称或单个营销词自动打分，或让加分项替代关键门槛。" },
     { term: "误判 False Positive", definition: "企业表面命中关键词，但业务角色、产品或能力不符合画像。", businessUse: "通过记录误判原因改进搜索式与排除规则。", evidence: "维修页、新闻页、无关产品同名、过期目录和聚合站。", pitfall: "删除误判记录，导致下次再次研究。" },
     { term: "信息时效", definition: "证据可能因产品线、团队、网点和职位变化而失效。", businessUse: "对高价值线索设置复核日期和更新状态。", evidence: "页面更新时间、当前团队资料、近期新闻和有效联系方式。", pitfall: "使用多年以前的职位或目录却不标记日期。" },
     { term: "下一最佳动作", definition: "在当前证据基础上，成本最低且最能减少关键不确定性的动作。", businessUse: "把 B 类核实和 A 类开发区别开来。", evidence: "缺失字段、待核实问题、可用渠道和研究上限。", pitfall: "对所有线索直接寻找邮箱并发送同一封邮件。" },
