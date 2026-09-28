@@ -42,6 +42,7 @@ export const stageHandbooks: Record<string, StageHandbookItem[]> = {
     { term: "误判 False Positive", definition: "企业表面命中关键词，但业务角色、产品或能力不符合画像。", businessUse: "通过记录误判原因改进搜索式与排除规则。", evidence: "维修页、新闻页、无关产品同名、过期目录和聚合站。", pitfall: "删除误判记录，导致下次再次研究。" },
     { term: "信息时效", definition: "证据可能因产品线、团队、网点和职位变化而失效。", businessUse: "对高价值线索设置复核日期和更新状态。", evidence: "页面更新时间、当前团队资料、近期新闻和有效联系方式。", pitfall: "使用多年以前的职位或目录却不标记日期。" },
     { term: "下一最佳动作", definition: "在当前证据基础上，成本最低且最能减少关键不确定性的动作。", businessUse: "把 B 类核实和 A 类开发区别开来。", evidence: "缺失字段、待核实问题、可用渠道和研究上限。", pitfall: "对所有线索直接寻找邮箱并发送同一封邮件。" },
+    { term: "行动优先级与研究上限", definition: "按当前等级、关键不确定性和预计信息价值，为一次研究设定目标、允许投入的时间和停止条件的管理规则。", businessUse: "让 A 类做有限度的准备、B 类做最小验证、C 类留下停止记录，避免把有限时间消耗在不能改变判断的搜索上。", evidence: "当前等级、支持或缺失的关键字段、预期新增证据、来源、时间盒、实际结果、升级/降级触发和日期。", pitfall: "把“继续跟进”当行动，或因公司规模、页面数量和主观兴趣而无限延长研究。" },
   ],
   外贸基础: [
     { term: "询盘 Inquiry / RFQ", definition: "买家对产品、价格或交易条件的咨询；RFQ 通常包含更明确的报价要求。", businessUse: "判断需要补技术信息还是可以进入正式报价。", evidence: "型号、数量、用途、目的地、时间和包装要求。", pitfall: "看到 Please send price 就立即报最低价。" },
