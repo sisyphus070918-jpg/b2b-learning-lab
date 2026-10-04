@@ -61,6 +61,8 @@ export const stageHandbooks: Record<string, StageHandbookItem[]> = {
     { term: "样品—试单—批量", definition: "分别验证产品、交易执行和稳定供应的三个阶段。", businessUse: "为不同阶段设置数量、价格、包装、检验和交期。", evidence: "验证目标、通过标准和下一阶段条件。", pitfall: "用批量价格承诺一次性样品，或把样品通过当成批量订单。" },
   ],
   商务英语: [
+    { term: "事实安全表达", definition: "在英语沟通中区分已确认事实、待核实信息和条件性可能性，并用相应句型表达的习惯。", businessUse: "在询盘、报价和开发沟通中既保持清楚，也不把客户需求、企业能力或交易条件的猜测写成承诺。", evidence: "客户原文、已确认的技术资料、企业审核信息、需求卡与报价边界表。", pitfall: "为让英文显得自信，使用 guarantee、best、always 或肯定句补写未确认的价格、认证、交期和采购意向。" },
+    { term: "词汇卡", definition: "把术语、常见搭配、工作含义、适用场景、安全短句、易混词和事实来源放在同一张可复习卡片上的学习工具。", businessUse: "让词汇能直接服务确认、复述、说明边界和安排下一步，而不是只停留在翻译记忆。", evidence: "已学习的询盘、条件表、报价框架与公开、可核实的企业资料。", pitfall: "只写英文和中文翻译，例句却包含没有来源的产品、客户或企业承诺。" },
     { term: "Relevance Opener", definition: "用对方可核实的产品、市场或角色证据说明为什么联系。", businessUse: "在前两句建立业务相关性。", evidence: "官网目录、品牌页、区域网络和公开资料。", pitfall: "用 I hope you are well 后直接堆公司介绍。" },
     { term: "Value Proposition", definition: "说明已验证能力怎样帮助特定买家降低风险或扩大业务。", businessUse: "连接企业证据与一个具体合作方向。", evidence: "真实产品范围、交期、测试、包装或选型能力。", pitfall: "使用 best quality、lowest price 等无法证明的空话。" },
     { term: "Call to Action", definition: "希望收件人采取的下一步动作。", businessUse: "把回复门槛降到一个问题、一次资料确认或简短转介。", evidence: "当前机会阶段和仍需验证的信息。", pitfall: "首封邮件就要求长会议、大订单或完整采购计划。" },
