@@ -70,6 +70,8 @@ export const stageHandbooks: Record<string, StageHandbookItem[]> = {
     { term: "Call to Action", definition: "希望收件人采取的下一步动作。", businessUse: "把回复门槛降到一个问题、一次资料确认或简短转介。", evidence: "当前机会阶段和仍需验证的信息。", pitfall: "首封邮件就要求长会议、大订单或完整采购计划。" },
     { term: "Clarification", definition: "通过简短问题确认规格、数量、角色、流程或理解。", businessUse: "避免因语言简化而改变技术与商业事实。", evidence: "询盘原文、规格文件和对方答复。", pitfall: "为了让英文流畅，擅自补齐未知信息。" },
     { term: "Follow-up", definition: "在首封之后用新信息、问题或证据继续推进。", businessUse: "测试相关性并降低收件人的理解成本。", evidence: "上次邮件、企业证据、补充资料和联系状态。", pitfall: "只写 Did you see my email?" },
+    { term: "跟进决策卡", definition: "在再次联系前记录上一封的目标、当前联系状态、唯一新增信息、CTA、预期信号和停止/升级条件的简明卡片。", businessUse: "确保每次跟进有不同目的，并让无回应、退信、拒绝、转介和不再联系进入不同的后续路径。", evidence: "首封版本、证据卡、已审核资料、回复或退信记录、对方明确偏好和日期。", pitfall: "无论当前状态如何都按固定间隔重复发送同一封模板，或把无回应写成客户兴趣。" },
+    { term: "停止信号", definition: "表明当前触达应停止、修正或等待的可观察状态，如退订、不再联系、明确拒绝、持续退信、资料不适用或项目设定的投入上限。", businessUse: "保护收件人偏好与团队时间，并让名单维护保留真实的反向证据。", evidence: "明确回复、退订/不再联系请求、邮件投递状态、角色更正和行动台账日期。", pitfall: "把拒绝或退订当成需要更强推销的信号，或删除记录后再次联系。" },
     { term: "Tone", definition: "邮件呈现的正式程度、礼貌和确定性。", businessUse: "让表达直接但不强迫，专业但不复杂。", evidence: "关系阶段、地区习惯和对方表达方式。", pitfall: "使用过度奉承、催促或绝对保证。" },
     { term: "Proofreading", definition: "发送前检查事实、姓名、公司、产品、数字、附件和语言。", businessUse: "防止模板残留和错误承诺。", evidence: "发送清单、附件版本和原始研究记录。", pitfall: "只检查语法，不检查业务事实。" },
     { term: "Attachment Discipline", definition: "只发送与当前问题有关、大小合适且版本正确的资料。", businessUse: "减少收件人负担并避免暴露无关或未核实资料。", evidence: "目标职位、产品范围、资料版本和使用许可。", pitfall: "第一次联系就发送完整目录和多个大附件。" },
