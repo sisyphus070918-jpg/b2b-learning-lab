@@ -78,6 +78,8 @@ export const stageHandbooks: Record<string, StageHandbookItem[]> = {
   ],
   销售沟通: [
     { term: "Discovery", definition: "通过提问理解买家现状、问题、影响、标准和流程。", businessUse: "判断是否存在真实机会以及需要什么证据。", evidence: "买家原话、时间表、评估标准和下一步。", pitfall: "把访谈变成连续产品介绍。" },
+    { term: "发现式问题地图", definition: "按现状、挑战、影响、评估标准、决策流程和下一步组织开放问题，并为每题标注要减少的不确定性的提纲。", businessUse: "在不预设客户痛点、预算或采购意向的前提下，逐步判断相关性和下一步资料。", evidence: "买家原话、公开资料、已确认的技术条件、流程说明和行动承诺。", pitfall: "把销售结论塞进问题，例如默认对方对现有供应商不满意，或一次抛出与当前阶段无关的长问卷。" },
+    { term: "四栏访谈记录", definition: "将客户原话或来源、中性总结、仍未知项和下一步需要的证据分别记录的格式。", businessUse: "保留事实与推断之间的边界，使销售、技术和项目人员能复查沟通并安全接手。", evidence: "会议纪要、邮件回复、规格文件、公开资料和记录日期。", pitfall: "把自己的总结写成客户原话，或把未知的预算、时间表和决策权填成主观判断。" },
     { term: "Current State", definition: "买家目前使用的产品、供应方式、流程和满意程度。", businessUse: "建立变化前的基线。", evidence: "供应商数量、现有型号、库存方式和流程描述。", pitfall: "默认现有方案一定有问题。" },
     { term: "Pain / Challenge", definition: "当前方案中具体、持续并影响业务的问题。", businessUse: "判断工厂能力是否能解决。", evidence: "缺货、质量、覆盖、维护、交期或成本的具体例子。", pitfall: "把一般愿望夸大成紧急痛点。" },
     { term: "Impact", definition: "问题对收入、成本、客户、生产、库存或风险造成的后果。", businessUse: "判断问题优先级和商业价值。", evidence: "停机、退货、延期、缺货和额外成本。", pitfall: "没有数据就编造经济影响。" },
