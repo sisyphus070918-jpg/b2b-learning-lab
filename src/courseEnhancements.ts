@@ -85,6 +85,8 @@ export const stageHandbooks: Record<string, StageHandbookItem[]> = {
     { term: "Impact", definition: "问题对收入、成本、客户、生产、库存或风险造成的后果。", businessUse: "判断问题优先级和商业价值。", evidence: "停机、退货、延期、缺货和额外成本。", pitfall: "没有数据就编造经济影响。" },
     { term: "Decision Criteria", definition: "买家评估产品和供应商时采用的技术与商业标准。", businessUse: "决定样品、报价和资料重点。", evidence: "规格、质量要求、交期、价格、付款和审核流程。", pitfall: "只问预算，不问适配与风险。" },
     { term: "Objection", definition: "阻碍下一步的顾虑、条件或信息缺口。", businessUse: "通过澄清识别真实原因，再选择相应证据。", evidence: "价格比较口径、现有供应关系、内部优先级和风险。", pitfall: "听到异议立即降价或反驳。" },
+    { term: "异议回应卡", definition: "把异议原话、已知事实、可能但未证实的含义、澄清问题、风险对应证据和停止/升级条件放在同一张卡上的回应工具。", businessUse: "让价格、信任和现有供应商等顾虑先被正确理解，再决定是否存在值得继续核实的小步骤。", evidence: "买家原话、已确认的规格与交易条件、真实企业资料、授权状态和行动台账。", pitfall: "将推测的痛点或能力写成事实，或用折扣、保证、贬低竞争者来替代澄清。" },
+    { term: "风险—证据映射", definition: "把质量、交付、价格边界或信任等具体顾虑，分别连接到可核实的证据、确认责任人和有限下一步的表格。", businessUse: "避免泛泛说“质量好”“交期稳”，并让没有证据的地方显式进入待确认状态。", evidence: "规格、测试范围、检验流程、排产、包装、物流、成本和企业审批记录。", pitfall: "用无关证书、虚构案例或不经核实的承诺来回应具体风险。" },
     { term: "Next Step", definition: "双方明确的动作、负责人、时间和完成标准。", businessUse: "判断机会是否真实前进。", evidence: "会议纪要、邮件确认和到期状态。", pitfall: "用保持联系、尽快回复等模糊结尾。" },
     { term: "Qualification", definition: "判断需求、匹配、决策、时间和资源是否值得继续投入。", businessUse: "把相关企业与当前销售机会分开。", evidence: "需求强度、负责人、评估流程、时间表和承诺。", pitfall: "把打开邮件或礼貌回复当成销售机会。" },
   ],
